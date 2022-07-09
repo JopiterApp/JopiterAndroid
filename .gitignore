@@ -5,3 +5,4 @@ local.properties
 .gitsecret/keys/random_seed
 !*.secret
 jopiter-key.jks
+keystore.properties
