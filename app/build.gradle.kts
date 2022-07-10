@@ -1,4 +1,5 @@
 import org.gradle.api.JavaVersion.VERSION_1_8
+import java.util.Properties
 
 plugins {
   id("com.android.application")
@@ -23,6 +24,51 @@ android {
 
   kotlinOptions {
     jvmTarget = "$VERSION_1_8"
+  }
+
+  signingConfigs {
+    val keyFile = rootProject.file("jopiter-key.jks")
+    val propertyFile = rootProject.file("keystore.properties")
+
+    if(!keyFile.exists() || !propertyFile.exists()) {
+      logger.warn("Impossible to create signing configs without signing-key.")
+      return@signingConfigs
+    }
+
+    val properties = Properties().apply {
+      load(propertyFile.inputStream())
+    }
+
+    create("production") {
+      storeFile = keyFile
+      keyPassword = properties.getProperty("KEYSTORE_KEY_PASSWORD")
+      storePassword = properties.getProperty("KEYSTORE_PASSWORD")
+      keyAlias = properties.getProperty("KEYSTORE_KEY_ALIAS")
+    }
+  }
+
+  flavorDimensions += "distribution"
+  productFlavors {
+    create("unofficial") {
+      dimension = "distribution"
+    }
+
+    if(signingConfigs.findByName("production") == null) return@productFlavors
+    create("official") {
+      dimension = "distribution"
+      signingConfig = signingConfigs.getByName("production")
+    }
+  }
+
+  buildTypes {
+    named("debug") {
+      applicationIdSuffix = ".debug"
+      isDebuggable = true
+    }
+
+    named("release") {
+      isMinifyEnabled = true
+    }
   }
 }
 
