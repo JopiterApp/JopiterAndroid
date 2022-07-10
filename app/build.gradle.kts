@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
   id("com.android.application")
   kotlin("android")
+  id("com.diffplug.spotless") version "6.8.0"
 }
 
 android {
@@ -79,4 +80,11 @@ dependencies {
 
   implementation(Libs.AndroidX.activityCompose)
   implementation(Libs.AndroidX.navigationCompose)
+}
+
+spotless {
+  kotlin {
+    licenseHeaderFile(rootProject.file("LICENSE_HEADER"))
+    target("src/*/java/**/*.kt")
+  }
 }
