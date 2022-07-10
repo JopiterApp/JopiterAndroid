@@ -20,7 +20,7 @@ jobs:
       - id: step-2
         name: Consistency check
         run: git diff --exit-code '.github/workflows/unit-tests.yaml'
-  "check-license-headers":
+  "unit-tests":
     runs-on: "ubuntu-latest"
     needs:
       - "check_yaml_consistency"

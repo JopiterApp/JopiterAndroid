@@ -15,7 +15,7 @@ workflow(
   sourceFile = __FILE__.toPath()
 ) {
 
-  job("check-license-headers", runsOn = RunnerType.UbuntuLatest) {
+  job("unit-tests", runsOn = RunnerType.UbuntuLatest) {
     uses(CheckoutV3())
     uses(GradleBuildActionV2(arguments = "app:test"))
   }
