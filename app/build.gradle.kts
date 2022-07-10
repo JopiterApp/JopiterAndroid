@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
   id("com.android.application")
   kotlin("android")
+  kotlin("kapt")
   id("com.diffplug.spotless") version "6.8.0"
 }
 
@@ -11,8 +12,13 @@ android {
   compileSdk = 32
 
   defaultConfig {
+    applicationId = "app.jopiter"
     targetSdk = 31
     minSdk = 26
+
+    testApplicationId = "$applicationId.test"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    testFunctionalTest = true
   }
 
   buildFeatures {
@@ -25,6 +31,13 @@ android {
 
   kotlinOptions {
     jvmTarget = "$VERSION_1_8"
+  }
+
+  testOptions {
+    unitTests {
+      isIncludeAndroidResources = true
+      all { it.useJUnitPlatform() }
+    }
   }
 
   signingConfigs {
@@ -74,13 +87,18 @@ android {
 }
 
 dependencies {
+  implementation(kotlin("reflect"))
+
   implementation(Libs.AndroidX.Compose.material)
   implementation(Libs.AndroidX.Compose.materialIcons)
   compileOnly(Libs.AndroidX.Compose.uiTooling)
 
   implementation(Libs.AndroidX.activityCompose)
   implementation(Libs.AndroidX.navigationCompose)
+
+  testImplementation(Libs.Kotest.junit5Runner)
 }
+
 
 spotless {
   kotlin {

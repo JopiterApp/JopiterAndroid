@@ -13,4 +13,11 @@ object Libs {
     val activityCompose = "androidx.activity:activity-compose:1.4.0"
     val navigationCompose = "androidx.navigation:navigation-compose:2.5.0"
   }
+
+  object Kotest {
+    const val version = "5.3.2"
+
+    val junit5Runner = "io.kotest:kotest-runner-junit5:$version"
+
+  }
 }
