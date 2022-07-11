@@ -21,7 +21,7 @@ workflow(
     val androidAction = CustomAction(
       "reactivecircus",
       "android-emulator-runner",
-      "2.24.0",
+      "v2",
       mapOf("api-level" to "31", "script" to "./gradlew connectedCheck")
     )
 

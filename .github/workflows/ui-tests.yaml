@@ -28,7 +28,7 @@ jobs:
       - id: step-0
         uses: actions/checkout@v3
       - id: step-1
-        uses: reactivecircus/android-emulator-runner@2.24.0
+        uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 31
           script: ./gradlew connectedCheck
