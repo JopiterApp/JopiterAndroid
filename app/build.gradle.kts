@@ -109,3 +109,9 @@ spotless {
     target("src/*/java/**/*.kt")
   }
 }
+
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(11))
+  }
+}
