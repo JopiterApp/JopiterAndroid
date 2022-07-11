@@ -1,0 +1,34 @@
+# This file was generated using Kotlin DSL (.github/workflows/ui-tests.main.kts).
+# If you want to modify the workflow, please change the Kotlin file and regenerate this YAML file.
+# Generated with https://github.com/krzema12/github-actions-kotlin-dsl
+
+name: Run interface tests
+
+on:
+  push:
+
+jobs:
+  "check_yaml_consistency":
+    runs-on: "ubuntu-latest"
+    steps:
+      - id: step-0
+        name: Check out
+        uses: actions/checkout@v3
+      - id: step-1
+        name: Execute script
+        run: rm '.github/workflows/ui-tests.yaml' && '.github/workflows/ui-tests.main.kts'
+      - id: step-2
+        name: Consistency check
+        run: git diff --exit-code '.github/workflows/ui-tests.yaml'
+  "ui-tests":
+    runs-on: "macos-latest"
+    needs:
+      - "check_yaml_consistency"
+    steps:
+      - id: step-0
+        uses: actions/checkout@v3
+      - id: step-1
+        uses: reactivecircus/android-emulator-runner@2.24.0
+        with:
+          api-level: 31
+          script: ./gradlew connectedCheck
