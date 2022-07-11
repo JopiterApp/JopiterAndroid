@@ -22,7 +22,7 @@ workflow(
       "reactivecircus",
       "android-emulator-runner",
       "v2",
-      mapOf("api-level" to "31", "script" to "./gradlew connectedCheck")
+      mapOf("api-level" to "29", "script" to "./gradlew connectedCheck")
     )
 
     uses(androidAction)
