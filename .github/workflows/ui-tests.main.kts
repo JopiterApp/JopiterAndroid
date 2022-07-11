@@ -4,6 +4,7 @@
 
 import it.krzeminski.githubactions.actions.CustomAction
 import it.krzeminski.githubactions.actions.actions.CheckoutV3
+import it.krzeminski.githubactions.actions.actions.SetupJavaV3
 import it.krzeminski.githubactions.domain.RunnerType
 import it.krzeminski.githubactions.domain.triggers.Push
 import it.krzeminski.githubactions.dsl.workflow
@@ -17,6 +18,7 @@ workflow(
 
   job("ui-tests", runsOn = RunnerType.MacOSLatest) {
     uses(CheckoutV3())
+    uses(SetupJavaV3("11", SetupJavaV3.Distribution.Adopt))
 
     val androidAction = CustomAction(
       "reactivecircus",
