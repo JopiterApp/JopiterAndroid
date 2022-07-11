@@ -97,6 +97,9 @@ dependencies {
   implementation(Libs.AndroidX.navigationCompose)
 
   testImplementation(Libs.Kotest.junit5Runner)
+
+  androidTestImplementation(Libs.AndroidX.Compose.Test.uiTestJunit4)
+  debugImplementation(Libs.AndroidX.Compose.Test.uiTestManifest)
 }
 
 
