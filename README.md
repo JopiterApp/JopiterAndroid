@@ -2,7 +2,23 @@
 
 [![GitHub](https://img.shields.io/github/license/JopiterApp/JopiterAndroid)](LICENSE)
 
+# Repository secrets
+
+The signing key is protected using `git secret`. More information about how git secret works can be
+found in the [official docs](https://git-secret.io/)
+
+Currently, OpenPGP keys with access:
+
+- Leonardo Colman Lopes
+  - Fingerprint `B3A5 9909 9ECC 4DB4 FD40  896F 7706 1922 C587 2792`
+  - Original Author
+- Github Actions
+  - Fingerprint `FD09 E5EC 9AE6 C84D DE2F  585B 2A3A 8839 E62F 07DA`
+  - Automatic pipeline for CD
+  - Expires 2024-07-09
+
 # Building APK
+
 ## Official Build
 
 ⚠️ You need the files
@@ -28,6 +44,7 @@ you to update the app unless you sign with the same key.
 ```
 ./gradlew bundleUnofficial
 ```
+
 The bundle output will be in `app/build/outputs/bundle/unofficialRelease`
 
 # License
