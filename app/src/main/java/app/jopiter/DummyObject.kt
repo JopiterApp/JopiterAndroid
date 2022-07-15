@@ -17,6 +17,7 @@
 */
 package app.jopiter
 
+@Suppress("ALL")
 object DummyObject {
 
   fun foo() = "foo"

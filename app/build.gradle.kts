@@ -6,6 +6,7 @@ plugins {
   kotlin("android")
   kotlin("kapt")
   id("com.diffplug.spotless") version "6.8.0"
+  id("io.gitlab.arturbosch.detekt").version("1.21.0-RC2")
 }
 
 android {
@@ -116,4 +117,8 @@ java {
   toolchain {
     languageVersion.set(JavaLanguageVersion.of(11))
   }
+}
+
+detekt {
+  buildUponDefaultConfig = true
 }
