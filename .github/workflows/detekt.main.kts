@@ -10,12 +10,12 @@ import it.krzeminski.githubactions.dsl.workflow
 import it.krzeminski.githubactions.yaml.writeToFile
 
 workflow(
-  "Run Detekt checks",
+  "Detekt",
   on = listOf(Push()),
   sourceFile = __FILE__.toPath()
 ) {
 
-  job("run-detekt", runsOn = RunnerType.UbuntuLatest) {
+  job("detekt", runsOn = RunnerType.UbuntuLatest) {
     uses(CheckoutV3())
     uses(GradleBuildActionV2(arguments = "app:detekt"))
   }
