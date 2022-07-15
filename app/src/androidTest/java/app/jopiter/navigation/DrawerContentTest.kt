@@ -17,8 +17,10 @@
 */
 package app.jopiter.navigation
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.ComposeTestRule
@@ -38,12 +40,14 @@ class DrawerContentTest {
   val composeRule = createComposeRule()
 
   lateinit var pageState: MutableState<Page>
+  lateinit var ctx: Context
 
   @Before
   fun setContent() {
     pageState = mutableStateOf(Page.Home)
     composeRule.setContent {
       DrawerContent(pageState.value) { pageState.value = it}
+      ctx = LocalContext.current
     }
   }
 
@@ -55,20 +59,20 @@ class DrawerContentTest {
   @Test
   fun drawer_should_contain_all_pages() {
     Page.values().forEach {
-      composeRule.onNodeWithText(it.title).assertIsDisplayed()
+      composeRule.onNodeWithText(it.title(ctx)).assertIsDisplayed()
     }
   }
 
   @Test
   fun default_selected_page_should_be_home() {
-    composeRule.selectedItem().assertTextEquals(Page.Home.title)
+    composeRule.selectedItem().assertTextEquals(Page.Home.title(ctx))
   }
 
   @Test
   fun touching_any_page_should_set_page_to_it() {
     val randomPage = Page.values().random()
 
-    composeRule.onNodeWithText(randomPage.title).performClick()
+    composeRule.onNodeWithText(randomPage.title(ctx)).performClick()
     assertTrue(pageState.value == randomPage)
   }
 

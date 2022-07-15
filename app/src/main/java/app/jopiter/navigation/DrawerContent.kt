@@ -19,6 +19,8 @@
 
 package app.jopiter.navigation
 
+import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -30,11 +32,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.jopiter.R
+import app.jopiter.R.string.home_title
 import app.jopiter.R.string.jopiter_app
+import app.jopiter.R.string.restaurant_title
 
 @Preview
 @Composable
@@ -69,20 +75,28 @@ private fun DrawerRow(page: Page, selectedPage: Page, onClick: () -> Unit) {
 
 @Composable
 private fun SelectedDrawerRow(selectedPage: Page) {
+  val title = selectedPage.title(LocalContext.current)
+
   ListItem(Modifier.background(MaterialTheme.colors.primary.copy(alpha = 0.12f))) {
-    Text(selectedPage.title, Modifier.testTag("selected_item"), MaterialTheme.colors.onSurface)
+    Text(title, Modifier.testTag("selected_item"), MaterialTheme.colors.onSurface)
   }
 }
 
 @Composable
 private fun UnselectedDrawerRow(page: Page) {
+  val title = page.title(LocalContext.current)
   ListItem {
-    Text(page.title, Modifier, MaterialTheme.colors.primary)
+    Text(title, Modifier, MaterialTheme.colors.primary)
   }
 }
 
 
-enum class Page(val title: String, val content: @Composable () -> Unit) {
-  Home("Home", { Text("Home") }),
-  Restaurants("Restaurant", { Text("Restaurant") })
+enum class Page(
+  @StringRes private val titleRes: Int,
+  val content: @Composable () -> Unit
+) {
+  Home(home_title, { Text("Home") }),
+  Restaurants(restaurant_title, { Text("Restaurant") });
+
+  fun title(context: Context) = with(context) { getString(titleRes) }
 }
