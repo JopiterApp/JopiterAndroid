@@ -2,7 +2,9 @@
 
 @file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.21.0")
 
+import it.krzeminski.githubactions.actions.CustomAction
 import it.krzeminski.githubactions.actions.actions.CheckoutV3
+import it.krzeminski.githubactions.actions.actions.UploadArtifactV3
 import it.krzeminski.githubactions.actions.gradle.GradleBuildActionV2
 import it.krzeminski.githubactions.domain.RunnerType
 import it.krzeminski.githubactions.domain.triggers.Push
@@ -18,5 +20,14 @@ workflow(
   job("detekt", runsOn = RunnerType.UbuntuLatest) {
     uses(CheckoutV3())
     uses(GradleBuildActionV2(arguments = "app:detekt"))
+
+    uses(
+      CustomAction(
+        "github/codeql-action",
+        "upload-sarif",
+        "v2",
+        mapOf("sarif_file" to "app/build/reports/detekt/detekt.sarif")
+      ),
+    )
   }
 }.writeToFile()

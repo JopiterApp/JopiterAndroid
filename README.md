@@ -1,6 +1,7 @@
 # Jopiter Android
 
 [![GitHub](https://img.shields.io/github/license/JopiterApp/JopiterAndroid)](LICENSE)
+[![Detekt](https://github.com/JopiterApp/JopiterAndroid/actions/workflows/detekt.yaml/badge.svg)](https://github.com/JopiterApp/JopiterAndroid/actions/workflows/detekt.yaml)
 
 # Repository secrets
 
