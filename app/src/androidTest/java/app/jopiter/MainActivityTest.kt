@@ -17,8 +17,19 @@
 */
 package app.jopiter
 
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeLeft
+import androidx.compose.ui.test.swipeRight
 import org.junit.Rule
 import org.junit.Test
 
@@ -28,7 +39,36 @@ class MainActivityTest {
   val composeTestRule = createAndroidComposeRule<MainActivity>()
 
   @Test
-  fun contains_foo() {
-    composeTestRule.onNodeWithText("foo").assertExists()
+  fun opens_drawer_on_swipe_right() {
+    composeTestRule.onRoot().performTouchInput { swipeRight() }
+    composeTestRule.assertDrawerIsOpen()
   }
+
+  @Test
+  fun closes_drawer_on_swipe_left() {
+    composeTestRule.onRoot().performTouchInput { swipeRight() }
+    composeTestRule.assertDrawerIsOpen()
+    composeTestRule.onRoot().performTouchInput { swipeLeft() }
+    composeTestRule.assertDrawerIsClosed()
+  }
+
+  @Test
+  fun opens_drawer_on_hamburger_touch() {
+    composeTestRule.onNodeWithContentDescription("open menu").performClick()
+    composeTestRule.assertDrawerIsOpen()
+  }
+
+  @Test
+  fun contains_app_name_on_top_bar() {
+    composeTestRule.topAppBarTitle().assertTextEquals("Jopiter")
+  }
+
+  private fun ComposeTestRule.topAppBarTitle() = onNodeWithTag("top_app_bar_title")
+
+
+  private fun ComposeTestRule.assertDrawerIsOpen() = drawerTitle().assertIsDisplayed()
+
+  private fun ComposeTestRule.assertDrawerIsClosed() = drawerTitle().assertIsNotDisplayed()
+
+  private fun ComposeTestRule.drawerTitle() = onNodeWithTag("drawer_title")
 }
