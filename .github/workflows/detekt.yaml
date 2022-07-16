@@ -31,7 +31,10 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: app:detekt
+          generate-job-summary: false
       - id: step-2
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: app/build/reports/detekt/detekt.sarif
+      - id: step-3
+        run: cat app/build/reports/detekt/detekt.md >> ${{ github.step_summary }}

@@ -8,6 +8,8 @@ import it.krzeminski.githubactions.actions.actions.UploadArtifactV3
 import it.krzeminski.githubactions.actions.gradle.GradleBuildActionV2
 import it.krzeminski.githubactions.domain.RunnerType
 import it.krzeminski.githubactions.domain.triggers.Push
+import it.krzeminski.githubactions.dsl.expressions.contexts.GitHubContext
+import it.krzeminski.githubactions.dsl.expressions.expr
 import it.krzeminski.githubactions.dsl.workflow
 import it.krzeminski.githubactions.yaml.writeToFile
 
@@ -19,7 +21,7 @@ workflow(
 
   job("detekt", runsOn = RunnerType.UbuntuLatest) {
     uses(CheckoutV3())
-    uses(GradleBuildActionV2(arguments = "app:detekt"))
+    uses(GradleBuildActionV2(arguments = "app:detekt", generateJobSummary = false))
 
     uses(
       CustomAction(
@@ -29,5 +31,7 @@ workflow(
         mapOf("sarif_file" to "app/build/reports/detekt/detekt.sarif")
       ),
     )
+
+    run("cat app/build/reports/detekt/detekt.md >> ${expr { GitHubContext.step_summary }}")
   }
 }.writeToFile()

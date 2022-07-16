@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.gradle.api.JavaVersion.VERSION_1_8
 import java.util.Properties
 
@@ -119,6 +120,13 @@ java {
   }
 }
 
-detekt {
+tasks.withType<Detekt> {
   buildUponDefaultConfig = true
+
+  reports {
+    html.required.set(true)
+    sarif.required.set(true)
+    txt.required.set(true)
+    xml.required.set(true)
+  }
 }
