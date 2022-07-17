@@ -100,7 +100,13 @@ dependencies {
   implementation(Libs.AndroidX.activityCompose)
   implementation(Libs.AndroidX.navigationCompose)
 
+  implementation(Libs.KoHttp.kohttp)
+  implementation(Libs.KoHttp.jackson)
+  implementation(Libs.Jackson.jsr310)
+
   testImplementation(Libs.Kotest.junit5Runner)
+  testImplementation(Libs.Kotest.Extensions.mockServer)
+  testImplementation(Libs.Slf4J.simple)
 
   androidTestImplementation(Libs.AndroidX.Compose.Test.uiTestJunit4)
   debugImplementation(Libs.AndroidX.Compose.Test.uiTestManifest)

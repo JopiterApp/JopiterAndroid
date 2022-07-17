@@ -24,5 +24,27 @@ object Libs {
 
     val junit5Runner = "io.kotest:kotest-runner-junit5:$version"
 
+    object Extensions {
+      val mockServer = "io.kotest.extensions:kotest-extensions-mockserver:1.2.1"
+    }
+  }
+
+  object KoHttp {
+    const val version = "0.12.0"
+
+    val kohttp = "io.github.rybalkinsd:kohttp:${version}"
+    val jackson = "io.github.rybalkinsd:kohttp-jackson:${version}"
+  }
+
+  object Slf4J {
+    const val version = "1.7.36"
+
+    val simple = "org.slf4j:slf4j-simple:$version"
+  }
+
+  object Jackson {
+    const val version = "2.13.3"
+
+    val jsr310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$version"
   }
 }
