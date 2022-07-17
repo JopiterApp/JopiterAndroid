@@ -15,6 +15,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+@file:Suppress("MagicNumber")
 package app.jopiter.restaurant.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -42,8 +43,23 @@ data class ProteinItem(
   @JsonProperty("foodGroup") val foodGroup: FoodGroup,
   @JsonProperty("preparation") val preparation: Preparation
 ) {
-  enum class FoodGroup { Ave, Bovina, Ovo, Peixe, Suina, Processada }
-  enum class Preparation { AoMolhoGorduroso, Assado, Cozido, Frito, GrelhadoRefogado, AoMolhoLeve }
+  enum class FoodGroup(val score: Int) {
+    Ave(2),
+    Ovo(2),
+    Peixe(2),
+    Bovina(1),
+    Suina(1),
+    Processada(0)
+  }
+
+  enum class Preparation(val score: Int) {
+    AoMolhoLeve(2),
+    Assado(2),
+    Cozido(2),
+    GrelhadoRefogado(2),
+    AoMolhoGorduroso(1),
+    Frito(0)
+  }
 }
 
 data class VegetarianItem(
@@ -51,8 +67,27 @@ data class VegetarianItem(
   @JsonProperty("foodGroup") val foodGroup: FoodGroup,
   @JsonProperty("preparation") val preparation: Preparation
 ) {
-  enum class FoodGroup { CerealMilho, Tuberculo, Legumes, Folhosos, Leguminosa, PTS, Soja, MassaTorta, Ovos, Queijo }
-  enum class Preparation { AoMolhoGorduroso, Assado, Cozido, Frito, GrelhadoRefogado, AoMolhoLeve }
+  enum class FoodGroup(val score: Double) {
+    Leguminosa(2.0),
+    Ovos(2.0),
+    PTS(2.0),
+    Soja(2.0),
+    CerealMilho(1.0),
+    Folhosos(1.0),
+    Legumes(1.0),
+    Queijo(1.0),
+    MassaTorta(0.5),
+    Tuberculo(0.5)
+  }
+
+  enum class Preparation(val score: Int) {
+    Assado(2),
+    Cozido(2),
+    GrelhadoRefogado(2),
+    AoMolhoLeve(2),
+    AoMolhoGorduroso(1),
+    Frito(0)
+  }
 }
 
 data class DessertItem(
@@ -60,6 +95,12 @@ data class DessertItem(
   @JsonProperty("foodGroup") val foodGroup: FoodGroup,
   @JsonProperty("preparation") val preparation: Preparation
 ) {
-  enum class FoodGroup { Doce, Fruta }
-  enum class Preparation { UltraProcessado, NaoUltraProcessado }
+  enum class FoodGroup(val score: Int) {
+    Fruta(2),
+    Doce(0)
+  }
+  enum class Preparation(val score: Int) {
+    NaoUltraProcessado(2),
+    UltraProcessado(0)
+  }
 }
