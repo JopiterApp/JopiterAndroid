@@ -2,6 +2,12 @@ object Libs {
 
   object AndroidX {
 
+    object DataStore {
+      const val version = "1.0.0"
+
+      val preferences = "androidx.datastore:datastore-preferences-core:$version"
+    }
+
     object Compose {
       const val version = "1.1.1"
 

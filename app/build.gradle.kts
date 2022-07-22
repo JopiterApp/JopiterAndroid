@@ -95,6 +95,7 @@ dependencies {
 
   implementation(Libs.AndroidX.Compose.material)
   implementation(Libs.AndroidX.Compose.materialIcons)
+  implementation(Libs.AndroidX.DataStore.preferences)
   compileOnly(Libs.AndroidX.Compose.uiTooling)
 
   implementation(Libs.AndroidX.activityCompose)
