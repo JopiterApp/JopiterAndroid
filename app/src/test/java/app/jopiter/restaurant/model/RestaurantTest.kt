@@ -17,19 +17,14 @@
 */
 package app.jopiter.restaurant.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.maps.shouldContainExactly
+import io.kotest.matchers.maps.shouldHaveSize
 
-data class Campus(
-  @JsonProperty("campusName") val campusName: String,
-  @JsonProperty("restaurants") val restaurants: List<Restaurant>
-)
+class RestaurantTest : FunSpec({
 
-data class Restaurant(
-  @JsonProperty("id") val id: Long,
-  @JsonProperty("restaurantName") val name: String
-) {
-  companion object {
-    val AllRestaurants = mapOf(
+  test("Should map ID to Name correctly") {
+    Restaurant.AllRestaurants shouldContainExactly mapOf(
       1L to "Piracicaba",
       2L to "Restaurante área 1",
       3L to "Restaurante área 2",
@@ -49,4 +44,9 @@ data class Restaurant(
       23L to "EEL - Área II"
     )
   }
-}
+
+  test("Should contain 17 mapped restaurants (known amount on 2022-07-23)") {
+    Restaurant.AllRestaurants shouldHaveSize 17
+  }
+
+})
