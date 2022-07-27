@@ -5,7 +5,7 @@ object Libs {
     object DataStore {
       const val version = "1.0.0"
 
-      val preferences = "androidx.datastore:datastore-preferences-core:$version"
+      val preferences = "androidx.datastore:datastore-preferences:$version"
     }
 
     object Compose {
@@ -52,5 +52,13 @@ object Libs {
     const val version = "2.13.3"
 
     val jsr310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$version"
+  }
+
+  object Koin {
+    const val version = "3.2.0"
+
+    val compose = "io.insert-koin:koin-androidx-compose:$version"
+
+    val junit4 = "io.insert-koin:koin-test-junit4:$version"
   }
 }

@@ -105,6 +105,9 @@ dependencies {
   implementation(Libs.KoHttp.jackson)
   implementation(Libs.Jackson.jsr310)
 
+  implementation(Libs.Koin.compose)
+  implementation(Libs.Koin.junit4)
+
   testImplementation(Libs.Kotest.junit5Runner)
   testImplementation(Libs.Kotest.Extensions.mockServer)
   testImplementation(Libs.Slf4J.simple)
