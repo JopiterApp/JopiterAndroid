@@ -58,4 +58,13 @@ class RestaurantTest : FunSpec({
       Restaurant.find(214) shouldBe null
     }
   }
+
+  context("Default restaurant") {
+    test("Default restaurant ID should be 6") {
+      Restaurant.DefaultRestaurantId shouldBe 6L
+    }
+    test("Default restaurant name should be Central") {
+      Restaurant.DefaultRestaurant.name shouldBe "Central"
+    }
+  }
 })

@@ -53,5 +53,8 @@ data class Restaurant(
       val name = AllRestaurants[id.toLong()]
       return name?.let { Restaurant(id.toLong(), name) }
     }
+
+    const val DefaultRestaurantId = 6
+    val DefaultRestaurant = find(DefaultRestaurantId)!!
   }
 }

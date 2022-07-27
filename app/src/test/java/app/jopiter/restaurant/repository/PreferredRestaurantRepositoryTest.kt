@@ -20,6 +20,7 @@ package app.jopiter.restaurant.repository
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.intPreferencesKey
 import app.jopiter.restaurant.model.Restaurant
+import app.jopiter.restaurant.model.RestaurantTest
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.engine.spec.tempfile
 import io.kotest.matchers.shouldBe
@@ -31,7 +32,7 @@ class PreferredRestaurantRepositoryTest : FunSpec({
   val target = PreferredRestaurantRepository(datastore)
 
   test("Starts with Restaurante Central (id 6) as default") {
-    target shouldHavePreferredRestaurant 6
+    target shouldHavePreferredRestaurant Restaurant.DefaultRestaurant
   }
 
   test("Persists value to datastore") {
@@ -41,14 +42,14 @@ class PreferredRestaurantRepositoryTest : FunSpec({
 
   test("Returns updated value") {
     target.setPreferredRestaurant(12)
-    target shouldHavePreferredRestaurant 12
+    target shouldHavePreferredRestaurant Restaurant(12, "Escola de Enfermagem")
 
     target.setPreferredRestaurant(14)
-    target shouldHavePreferredRestaurant 14
+    target shouldHavePreferredRestaurant Restaurant(14, "Largo São Francisco")
   }
 })
 
-private suspend infix fun PreferredRestaurantRepository.shouldHavePreferredRestaurant(int: Int) {
-  preferredRestaurant.first() shouldBe int
+private suspend infix fun PreferredRestaurantRepository.shouldHavePreferredRestaurant(restaurant: Restaurant) {
+  preferredRestaurant.first() shouldBe restaurant
 }
 

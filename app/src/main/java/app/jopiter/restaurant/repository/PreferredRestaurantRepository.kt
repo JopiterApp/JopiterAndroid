@@ -21,20 +21,23 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import app.jopiter.restaurant.model.Restaurant
+import app.jopiter.restaurant.model.Restaurant.Companion.DefaultRestaurantId
 import kotlinx.coroutines.flow.map
 
 class PreferredRestaurantRepository(
   private val dataStore: DataStore<Preferences>
 ) {
 
-  val preferredRestaurant = dataStore.data.map { it[preferredRestaurantKey] ?: DefaultRestaurantId }
+  val preferredRestaurant = dataStore.data
+    .map { it[preferredRestaurantKey] ?: DefaultRestaurantId }
+    .map { Restaurant.find(it)!! }
 
   suspend fun setPreferredRestaurant(int: Int) {
     dataStore.edit { it[preferredRestaurantKey] = int }
   }
 
   companion object {
-    private const val DefaultRestaurantId = 6
     val preferredRestaurantKey = intPreferencesKey("preferred_restaurant")
   }
 
