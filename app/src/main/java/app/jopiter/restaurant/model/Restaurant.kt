@@ -48,5 +48,10 @@ data class Restaurant(
       20L to "Bauru",
       23L to "EEL - Área II"
     )
+
+    fun find(id: Number): Restaurant? {
+      val name = AllRestaurants[id.toLong()]
+      return name?.let { Restaurant(id.toLong(), name) }
+    }
   }
 }

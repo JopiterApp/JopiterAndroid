@@ -20,6 +20,7 @@ package app.jopiter.restaurant.model
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.maps.shouldContainExactly
 import io.kotest.matchers.maps.shouldHaveSize
+import io.kotest.matchers.shouldBe
 
 class RestaurantTest : FunSpec({
 
@@ -49,4 +50,12 @@ class RestaurantTest : FunSpec({
     Restaurant.AllRestaurants shouldHaveSize 17
   }
 
+  context("Find") {
+    test("Finds known restaurants") {
+      Restaurant.find(13) shouldBe Restaurant(13L, "EACH")
+    }
+    test("Returns null on unknown restaurants") {
+      Restaurant.find(214) shouldBe null
+    }
+  }
 })
