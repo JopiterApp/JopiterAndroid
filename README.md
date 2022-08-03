@@ -38,6 +38,11 @@ Currently, OpenPGP keys with access:
     - Automatic pipeline for CD
     - Expires 2024-07-09
 
+- [Daniel Cordeiro](http://www.each.usp.br/dc/)
+  - Fingerprint `EC89 B406 D3CE 1843 51F7 E462 34D7 619A B850 26D5`
+  - Professor in the School of Arts, Sciences and Humanities at University of São Paulo, Brazil
+  - Coordinated this project
+
 # Building APK
 
 ## Official Build
