@@ -6,7 +6,6 @@ plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
-  id("com.diffplug.spotless") version "6.8.0"
   id("io.gitlab.arturbosch.detekt").version("1.21.0-RC2")
 }
 
@@ -114,14 +113,6 @@ dependencies {
   testImplementation(libs.koin.junit4)
 }
 
-
-spotless {
-  kotlin {
-    licenseHeaderFile(rootProject.file("LICENSE_HEADER"))
-    target("src/*/java/**/*.kt")
-  }
-}
-
 java {
   toolchain {
     languageVersion.set(JavaLanguageVersion.of(11))
@@ -130,11 +121,4 @@ java {
 
 tasks.withType<Detekt> {
   buildUponDefaultConfig = true
-
-  reports {
-    html.required.set(true)
-    sarif.required.set(true)
-    txt.required.set(true)
-    xml.required.set(true)
-  }
 }
