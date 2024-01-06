@@ -1,0 +1,31 @@
+[versions]
+kotlin = "1.6.10"
+compose = "1.1.1"
+kotest = "5.3.2"
+kohttp = "0.12.0"
+koin = "3.2.0"
+
+
+[libraries]
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }
+compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
+compose-activity = { module = "androidx.activity:activity-compose", version = "1.4.0" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.5.0" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-extensions-mockserver = { module = "io.kotest.extensions:kotest-extensions-mockserver", version = "1.2.1" }
+kohttp = { module = "io.github.rybalkinsd:kohttp", version.ref = "kohttp" }
+kohttp-jackson = { module = "io.github.rybalkinsd:kohttp-jackson", version.ref = "kohttp" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version = "1.7.36" }
+jackson-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version = "2.13.3" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
+
+
+[bundles]
+compose = ["compose-material", "compose-material-icons", "compose-activity", "compose-navigation"]
+kotest = ["kotest-runner-junit5", "kotest-extensions-mockserver"]
+kohttp = ["kohttp", "kohttp-jackson", "jackson-jsr310"]

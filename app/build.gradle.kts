@@ -91,29 +91,27 @@ android {
 }
 
 dependencies {
-  implementation(kotlin("reflect"))
+  // Compose
+  implementation(libs.bundles.compose)
+  compileOnly(libs.compose.ui.tooling)
+  androidTestImplementation(libs.compose.ui.test.junit4)
+  androidTestImplementation(libs.compose.ui.test.manifest)
 
-  implementation(Libs.AndroidX.Compose.material)
-  implementation(Libs.AndroidX.Compose.materialIcons)
-  implementation(Libs.AndroidX.DataStore.preferences)
-  compileOnly(Libs.AndroidX.Compose.uiTooling)
+  // AndroidX Datastore
+  implementation(libs.datastore.preferences)
 
-  implementation(Libs.AndroidX.activityCompose)
-  implementation(Libs.AndroidX.navigationCompose)
+  // Kotest
+  testImplementation(libs.bundles.kotest)
 
-  implementation(Libs.KoHttp.kohttp)
-  implementation(Libs.KoHttp.jackson)
-  implementation(Libs.Jackson.jsr310)
+  // Kohttp
+  implementation(libs.bundles.kohttp)
 
-  implementation(Libs.Koin.compose)
-  implementation(Libs.Koin.junit4)
+  // SL4J
+  implementation(libs.slf4j.simple)
 
-  testImplementation(Libs.Kotest.junit5Runner)
-  testImplementation(Libs.Kotest.Extensions.mockServer)
-  testImplementation(Libs.Slf4J.simple)
-
-  androidTestImplementation(Libs.AndroidX.Compose.Test.uiTestJunit4)
-  debugImplementation(Libs.AndroidX.Compose.Test.uiTestManifest)
+  // Koin
+  implementation(libs.koin.compose)
+  testImplementation(libs.koin.junit4)
 }
 
 
