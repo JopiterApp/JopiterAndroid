@@ -1,12 +1,11 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import org.gradle.api.JavaVersion.VERSION_1_8
 import java.util.Properties
 
 plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
-  id("io.gitlab.arturbosch.detekt").version("1.21.0-RC2")
+  id("io.gitlab.arturbosch.detekt").version("1.23.4")
 }
 
 android {
@@ -29,11 +28,7 @@ android {
   }
 
   composeOptions {
-    kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
-  }
-
-  kotlinOptions {
-    jvmTarget = "$VERSION_1_8"
+    kotlinCompilerExtensionVersion = libs.versions.compose.get()
   }
 
   testOptions {
