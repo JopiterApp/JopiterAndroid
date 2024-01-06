@@ -1,37 +1,27 @@
 #!/usr/bin/env kotlin
+@file:DependsOn("io.github.typesafegithub:github-workflows-kt:1.8.0")
 
-@file:DependsOn("it.krzeminski:github-actions-kotlin-dsl:0.21.0")
+import io.github.typesafegithub.workflows.actions.actions.CheckoutV4
+import io.github.typesafegithub.workflows.actions.actions.SetupJavaV4
+import io.github.typesafegithub.workflows.actions.gradle.GradleBuildActionV2
+import io.github.typesafegithub.workflows.domain.RunnerType.UbuntuLatest
+import io.github.typesafegithub.workflows.domain.triggers.PullRequest
+import io.github.typesafegithub.workflows.domain.triggers.Push
+import io.github.typesafegithub.workflows.dsl.expressions.contexts.GitHubContext
+import io.github.typesafegithub.workflows.dsl.expressions.expr
+import io.github.typesafegithub.workflows.dsl.workflow
+import io.github.typesafegithub.workflows.yaml.writeToFile
 
-import it.krzeminski.githubactions.actions.CustomAction
-import it.krzeminski.githubactions.actions.actions.CheckoutV3
-import it.krzeminski.githubactions.actions.actions.UploadArtifactV3
-import it.krzeminski.githubactions.actions.gradle.GradleBuildActionV2
-import it.krzeminski.githubactions.domain.RunnerType
-import it.krzeminski.githubactions.domain.triggers.Push
-import it.krzeminski.githubactions.dsl.expressions.contexts.GitHubContext
-import it.krzeminski.githubactions.dsl.expressions.expr
-import it.krzeminski.githubactions.dsl.workflow
-import it.krzeminski.githubactions.yaml.writeToFile
 
 workflow(
-  "Detekt",
-  on = listOf(Push()),
-  sourceFile = __FILE__.toPath()
+    name = "Lint",
+    on = listOf(Push(), PullRequest()),
+    sourceFile = __FILE__.toPath()
 ) {
-
-  job("detekt", runsOn = RunnerType.UbuntuLatest) {
-    uses(CheckoutV3())
-    uses(GradleBuildActionV2(arguments = "app:detekt", generateJobSummary = false))
-
-    uses(
-      CustomAction(
-        "github/codeql-action",
-        "upload-sarif",
-        "v2",
-        mapOf("sarif_file" to "app/build/reports/detekt/detekt.sarif")
-      ),
-    )
-
-    run("cat app/build/reports/detekt/detekt.md >> ${expr { GitHubContext.step_summary }}")
-  }
-}.writeToFile()
+    job(id = "detekt", runsOn = UbuntuLatest) {
+        uses(name = "Set up JDK", action = SetupJavaV4(javaVersion = "17", distribution = SetupJavaV4.Distribution.Adopt))
+        uses(action = CheckoutV4())
+        uses(action = GradleBuildActionV2(arguments = "detekt"))
+        run(command = "cat app/build/reporots/detekt/detekt.md >> ${expr { GitHubContext.step_summary } }")
+    }
+}.writeToFile(generateActionBindings = true)

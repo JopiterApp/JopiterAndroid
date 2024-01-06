@@ -1,40 +1,41 @@
 # This file was generated using Kotlin DSL (.github/workflows/detekt.main.kts).
 # If you want to modify the workflow, please change the Kotlin file and regenerate this YAML file.
-# Generated with https://github.com/krzema12/github-actions-kotlin-dsl
+# Generated with https://github.com/typesafegithub/github-workflows-kt
 
-name: Detekt
-
+name: 'Lint'
 on:
-  push:
-
+  push: {}
+  pull_request: {}
 jobs:
-  "check_yaml_consistency":
-    runs-on: "ubuntu-latest"
+  check_yaml_consistency:
+    name: 'Check YAML consistency'
+    runs-on: 'ubuntu-latest'
     steps:
-      - id: step-0
-        name: Check out
-        uses: actions/checkout@v3
-      - id: step-1
-        name: Execute script
-        run: rm '.github/workflows/detekt.yaml' && '.github/workflows/detekt.main.kts'
-      - id: step-2
-        name: Consistency check
-        run: git diff --exit-code '.github/workflows/detekt.yaml'
-  "detekt":
-    runs-on: "ubuntu-latest"
+    - id: 'step-0'
+      name: 'Check out'
+      uses: 'actions/checkout@v4'
+    - id: 'step-1'
+      name: 'Execute script'
+      run: 'rm ''.github/workflows/detekt.yaml'' && ''.github/workflows/detekt.main.kts'''
+    - id: 'step-2'
+      name: 'Consistency check'
+      run: 'git diff --exit-code ''.github/workflows/detekt.yaml'''
+  detekt:
+    runs-on: 'ubuntu-latest'
     needs:
-      - "check_yaml_consistency"
+    - 'check_yaml_consistency'
     steps:
-      - id: step-0
-        uses: actions/checkout@v3
-      - id: step-1
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: app:detekt
-          generate-job-summary: false
-      - id: step-2
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: app/build/reports/detekt/detekt.sarif
-      - id: step-3
-        run: cat app/build/reports/detekt/detekt.md >> ${{ github.step_summary }}
+    - id: 'step-0'
+      name: 'Set up JDK'
+      uses: 'actions/setup-java@v4'
+      with:
+        java-version: '17'
+        distribution: 'adopt'
+    - id: 'step-1'
+      uses: 'actions/checkout@v4'
+    - id: 'step-2'
+      uses: 'gradle/gradle-build-action@v2'
+      with:
+        arguments: 'detekt'
+    - id: 'step-3'
+      run: 'cat app/build/reporots/detekt/detekt.md >> ${{ github.step_summary }}'
