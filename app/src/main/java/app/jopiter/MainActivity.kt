@@ -41,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import app.jopiter.R.string.app_name
 import app.jopiter.R.string.open_menu_content_description
 import app.jopiter.navigation.DrawerContent
+import app.jopiter.navigation.JopiterTopBar
 import app.jopiter.navigation.Page
 import kotlinx.coroutines.launch
 
@@ -72,16 +73,4 @@ private fun MainScreen() {
   ) {
     selectedPage.content()
   }
-}
-
-@Composable
-private fun JopiterTopBar(openDrawer: () -> Unit) {
-  val title = stringResource(app_name)
-  val iconDescription = stringResource(open_menu_content_description)
-
-  TopAppBar(
-    title = { Text(title, Modifier.testTag("top_app_bar_title")) },
-    navigationIcon = { Icon(Default.Menu, iconDescription, Modifier.clickable { openDrawer() }) },
-    modifier = Modifier.testTag("top_app_bar")
-  )
 }
