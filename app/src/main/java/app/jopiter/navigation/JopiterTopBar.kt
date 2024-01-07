@@ -20,7 +20,7 @@ fun JopiterTopBar(onNavigationClick: () -> Unit) {
 
     TopAppBar(
         title = { Text(title, Modifier.testTag("top_app_bar_title")) },
-        navigationIcon = { Icon(Icons.Default.Menu, iconDescription, Modifier.clickable { onNavigationClick() }) },
+        navigationIcon = { Icon(Icons.Default.Menu, iconDescription, Modifier.clickable { onNavigationClick() }.testTag("top_app_bar_icon")) },
         modifier = Modifier.testTag("top_app_bar")
     )
 }

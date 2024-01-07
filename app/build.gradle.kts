@@ -87,7 +87,7 @@ android {
 dependencies {
   // Compose
   implementation(libs.bundles.compose)
-  compileOnly(libs.compose.ui.tooling)
+  debugImplementation(libs.compose.ui.tooling)
   androidTestImplementation(libs.compose.ui.test.junit4)
   androidTestImplementation(libs.compose.ui.test.manifest)
 
