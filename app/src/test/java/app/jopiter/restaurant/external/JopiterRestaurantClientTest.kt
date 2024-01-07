@@ -78,7 +78,7 @@ class JopiterRestaurantClientTest : FunSpec({
     }
 
     test("Can parse current production response") {
-      val client = JopiterRestaurantClient("https://v2.backend.jopiter.app")
+      val client = JopiterRestaurantClient("https://v4.backend.jopiter.app")
       client.fetchRestaurants().shouldBeSuccess()
     }
   }
@@ -112,7 +112,7 @@ class JopiterRestaurantClientTest : FunSpec({
     }
 
     test("Parses any output from production environment") {
-      val client = JopiterRestaurantClient("https://v2.backend.jopiter.app")
+      val client = JopiterRestaurantClient("https://v4.backend.jopiter.app")
       (1..30).toList().forAtLeast(10) {
         client.fetchItems(it).shouldBeSuccess()
       }
@@ -127,7 +127,7 @@ private fun MockServerClient.prepareTimeout() =
   `when`(request()).respond(response().withDelay(seconds(4)))
 
 private fun MockServerClient.prepareWithJopiterOpenAPI() =
-  upsert(openAPIExpectation("https://v2.backend.jopiter.app/api/v1/docs.yaml"))
+  upsert(openAPIExpectation("https://v4.backend.jopiter.app/api/v1/docs.yaml"))
 
 // FIXME couldn't manage to use OpenAPI specification for this with mockserver
 private fun MockServerClient.prepareSuccessItemsResponse() =
