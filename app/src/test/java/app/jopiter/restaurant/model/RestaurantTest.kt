@@ -46,7 +46,7 @@ class RestaurantTest : FunSpec({
     )
   }
 
-  test("Should contain 17 mapped restaurants (known amount on 2022-07-23)") {
+  test("Should contain 17 mapped restaurants (known amount on 2024-01-10)") {
     Restaurant.AllRestaurants shouldHaveSize 17
   }
 
