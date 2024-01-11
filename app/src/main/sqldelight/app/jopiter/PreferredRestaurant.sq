@@ -1,0 +1,12 @@
+CREATE TABLE PreferredRestaurant(
+    preferredRestaurant INTEGER NOT NULL
+);
+
+INSERT INTO PreferredRestaurant (preferredRestaurant) VALUES (6);
+
+
+select:
+SELECT preferredRestaurant FROM PreferredRestaurant LIMIT 1;
+
+update:
+UPDATE PreferredRestaurant SET preferredRestaurant=?;

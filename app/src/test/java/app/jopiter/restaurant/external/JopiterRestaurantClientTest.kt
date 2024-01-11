@@ -40,7 +40,7 @@ import java.time.LocalDate.now
 class JopiterRestaurantClientTest : FunSpec({
 
   val mockServerListener = listener(MockServerListener())
-  val mockServer by lazy { mockServerListener.mockServer }
+  val mockServer by lazy { mockServerListener.mockServer!! }
 
   val target by lazy { JopiterRestaurantClient("http://localhost:${mockServer.port}") }
 

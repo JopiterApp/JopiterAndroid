@@ -18,19 +18,16 @@
 package app.jopiter.restaurant
 
 import android.content.Context
-import androidx.datastore.preferences.preferencesDataStore
+import app.jopiter.Database
 import app.jopiter.restaurant.external.JopiterRestaurantClient
 import app.jopiter.restaurant.repository.PreferredRestaurantRepository
 import org.koin.dsl.module
 
-private const val RemoteAddress = "https://v2.backend.jopiter.app"
-
-private val Context.preferredRestaurantDatastore by preferencesDataStore("preferred_restaurant")
+private const val RemoteAddress = "https://persephone.jopiter.app"
 
 val restaurantModule = module {
 
   single { JopiterRestaurantClient(RemoteAddress) }
-
-  single { PreferredRestaurantRepository(get<Context>().preferredRestaurantDatastore) }
+  single { PreferredRestaurantRepository(get<Database>().preferredRestaurantQueries) }
 
 }

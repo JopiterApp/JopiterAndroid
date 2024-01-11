@@ -18,10 +18,12 @@
 package app.jopiter
 
 import android.app.Application
+import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import app.jopiter.restaurant.restaurantModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
 class JopiterApplication : Application() {
 
@@ -35,6 +37,9 @@ class JopiterApplication : Application() {
       androidLogger()
       androidContext(this@JopiterApplication)
       modules(restaurantModule)
+      modules(module {
+        single { Database(AndroidSqliteDriver(Database.Schema, get(), "Database")) }
+      })
     }
   }
 }

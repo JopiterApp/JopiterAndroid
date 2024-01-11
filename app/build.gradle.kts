@@ -5,15 +5,17 @@ plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
-  id("io.gitlab.arturbosch.detekt").version("1.23.4")
+  id("io.gitlab.arturbosch.detekt") version "1.23.4"
+  id("app.cash.sqldelight") version "2.0.1"
 }
 
 android {
-  compileSdk = 32
+  namespace = "app.jopiter"
+  compileSdk = 34
 
   defaultConfig {
     applicationId = "app.jopiter"
-    targetSdk = 31
+    targetSdk = 34
     minSdk = 26
     versionCode = 300
     versionName = "3.0.0"
@@ -21,6 +23,11 @@ android {
     testApplicationId = "$applicationId.test"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     testFunctionalTest = true
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 
   buildFeatures {
@@ -91,8 +98,11 @@ dependencies {
   androidTestImplementation(libs.compose.ui.test.junit4)
   androidTestImplementation(libs.compose.ui.test.manifest)
 
-  // AndroidX Datastore
-  implementation(libs.datastore.preferences)
+
+  // SQL Delight
+  implementation(libs.sqldelight.android.driver)
+  implementation(libs.sqldelight.coroutines.extensions)
+  testImplementation(libs.sqdelight.sqlite.driver)
 
   // Kotest
   testImplementation(libs.bundles.kotest)
@@ -116,4 +126,13 @@ java {
 
 tasks.withType<Detekt> {
   buildUponDefaultConfig = true
+}
+
+
+sqldelight {
+  databases {
+    create("Database") {
+      packageName.set("app.jopiter")
+    }
+  }
 }

@@ -17,28 +17,18 @@
 */
 package app.jopiter.restaurant.repository
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
+import app.cash.sqldelight.coroutines.asFlow
+import app.jopiter.PreferredRestaurantQueries
 import app.jopiter.restaurant.model.Restaurant
-import app.jopiter.restaurant.model.Restaurant.Companion.DefaultRestaurantId
 import kotlinx.coroutines.flow.map
 
 class PreferredRestaurantRepository(
-  private val dataStore: DataStore<Preferences>
+  private val preferredRestaurantQueries: PreferredRestaurantQueries
 ) {
 
-  val preferredRestaurant = dataStore.data
-    .map { it[preferredRestaurantKey] ?: DefaultRestaurantId }
-    .map { Restaurant.find(it)!! }
+  val preferredRestaurant = preferredRestaurantQueries.select().asFlow().map { Restaurant.get(it.executeAsOne()) }
 
-  suspend fun setPreferredRestaurant(int: Int) {
-    dataStore.edit { it[preferredRestaurantKey] = int }
+  fun setPreferredRestaurant(preferredRestaurant: Restaurant) {
+    preferredRestaurantQueries.update(preferredRestaurant.id)
   }
-
-  companion object {
-    val preferredRestaurantKey = intPreferencesKey("preferred_restaurant")
-  }
-
 }

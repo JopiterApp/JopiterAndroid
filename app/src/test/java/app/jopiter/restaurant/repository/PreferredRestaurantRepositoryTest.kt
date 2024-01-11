@@ -17,34 +17,36 @@
 */
 package app.jopiter.restaurant.repository
 
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.intPreferencesKey
+import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import app.jopiter.Database
 import app.jopiter.restaurant.model.Restaurant
-import app.jopiter.restaurant.model.RestaurantTest
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.engine.spec.tempfile
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 
 class PreferredRestaurantRepositoryTest : FunSpec({
-  // TODO Extract to Kotest Listener
-  val datastore = PreferenceDataStoreFactory.create { tempfile(suffix = ".preferences_pb") }
-  val target = PreferredRestaurantRepository(datastore)
+  val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
+  Database.Schema.create(driver)
+
+  val database = Database(driver)
+
+  val target = PreferredRestaurantRepository(database.preferredRestaurantQueries)
 
   test("Starts with Restaurante Central (id 6) as default") {
     target shouldHavePreferredRestaurant Restaurant.DefaultRestaurant
   }
 
   test("Persists value to datastore") {
-    target.setPreferredRestaurant(18)
-    datastore.data.first()[PreferredRestaurantRepository.preferredRestaurantKey] shouldBe 18
+    val newRestaurant = Restaurant(18L, "New Restaurant")
+    target.setPreferredRestaurant(newRestaurant)
+    database.preferredRestaurantQueries.select().executeAsOne() shouldBe 18L
   }
 
   test("Returns updated value") {
-    target.setPreferredRestaurant(12)
+    target.setPreferredRestaurant(Restaurant(12, "Escola de Enfermagem"))
     target shouldHavePreferredRestaurant Restaurant(12, "Escola de Enfermagem")
 
-    target.setPreferredRestaurant(14)
+    target.setPreferredRestaurant(Restaurant(14, "Largo São Francisco"))
     target shouldHavePreferredRestaurant Restaurant(14, "Largo São Francisco")
   }
 })
