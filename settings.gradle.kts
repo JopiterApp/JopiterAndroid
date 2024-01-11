@@ -11,5 +11,5 @@ dependencyResolutionManagement {
         google()
     }
 }
-rootProject.name = "Jopiter"
+rootProject.name = "JopiterAndroid"
 include(":app")
