@@ -46,7 +46,7 @@ class VegetarianItemTest : FunSpec({
 
   test("Calculate preparation scores") {
     listOf(Assado, Cozido, GrelhadoRefogado, AoMolhoLeve).forAll { it.score shouldBe 2 }
-    listOf(AoMolhoGorduroso).forAll { it.score shouldBe 1}
+    listOf(AoMolhoGorduroso).forAll { it.score shouldBe 1 }
     listOf(Frito).forAll { it.score shouldBe 0 }
   }
 })

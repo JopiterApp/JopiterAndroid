@@ -16,6 +16,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 @file:Suppress("MagicNumber")
+
 package app.jopiter.restaurant.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -99,6 +100,7 @@ data class DessertItem(
     Fruta(2),
     Doce(0)
   }
+
   enum class Preparation(val score: Int) {
     NaoUltraProcessado(2),
     UltraProcessado(0)

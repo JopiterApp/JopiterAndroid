@@ -61,9 +61,11 @@ class JopiterRestaurantClientTest : FunSpec({
       mockServer.prepareWithJopiterOpenAPI()
 
       target.fetchRestaurants() shouldBeSuccess listOf(
-        Campus("Cidade Universitária", listOf(
-          Restaurant(9, "Químicas")
-        ))
+        Campus(
+          "Cidade Universitária", listOf(
+            Restaurant(9, "Químicas")
+          )
+        )
       )
     }
 
@@ -98,17 +100,19 @@ class JopiterRestaurantClientTest : FunSpec({
       mockServer.prepareSuccessItemsResponse()
 
       target.fetchItems(1).shouldBeSuccess()
-      target.fetchItems(1) shouldBeSuccess listOf(RestaurantMenu(
-        "string",
-        0,
-        now(),
-        RestaurantMenu.Period.Lunch,
-        0,
-        ProteinItem("string", ProteinItem.FoodGroup.Ave, ProteinItem.Preparation.AoMolhoGorduroso),
-        VegetarianItem("string", VegetarianItem.FoodGroup.CerealMilho, VegetarianItem.Preparation.AoMolhoGorduroso),
-        DessertItem("string", DessertItem.FoodGroup.Doce, DessertItem.Preparation.UltraProcessado),
-        listOf("string")
-      ))
+      target.fetchItems(1) shouldBeSuccess listOf(
+        RestaurantMenu(
+          "string",
+          0,
+          now(),
+          RestaurantMenu.Period.Lunch,
+          0,
+          ProteinItem("string", ProteinItem.FoodGroup.Ave, ProteinItem.Preparation.AoMolhoGorduroso),
+          VegetarianItem("string", VegetarianItem.FoodGroup.CerealMilho, VegetarianItem.Preparation.AoMolhoGorduroso),
+          DessertItem("string", DessertItem.FoodGroup.Doce, DessertItem.Preparation.UltraProcessado),
+          listOf("string")
+        )
+      )
     }
 
     test("Parses any output from production environment") {
@@ -131,10 +135,13 @@ private fun MockServerClient.prepareWithJopiterOpenAPI() =
 
 // FIXME couldn't manage to use OpenAPI specification for this with mockserver
 private fun MockServerClient.prepareSuccessItemsResponse() =
-  `when`(request("/api/v1/restaurants/items")
-    .withQueryStringParameter("restaurantId", "1")
-    .withQueryStringParameter("date", "${now()}")
-  ).respond(response().withBody("""
+  `when`(
+    request("/api/v1/restaurants/items")
+      .withQueryStringParameter("restaurantId", "1")
+      .withQueryStringParameter("date", "${now()}")
+  ).respond(
+    response().withBody(
+      """
     [
       {
         "restaurantId": 0,
@@ -163,4 +170,6 @@ private fun MockServerClient.prepareSuccessItemsResponse() =
         "restaurantName": "string"
       }
     ]
-  """.trimIndent()))
+  """.trimIndent()
+    )
+  )

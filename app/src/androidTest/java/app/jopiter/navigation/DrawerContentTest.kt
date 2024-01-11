@@ -46,7 +46,7 @@ class DrawerContentTest {
   fun setContent() {
     pageState = mutableStateOf(Page.Home)
     composeRule.setContent {
-      DrawerContent(pageState.value) { pageState.value = it}
+      DrawerContent(pageState.value) { pageState.value = it }
       ctx = LocalContext.current
     }
   }

@@ -15,12 +15,20 @@ import app.jopiter.R.string.open_menu_content_description
 
 @Composable
 fun JopiterTopBar(onNavigationClick: () -> Unit) {
-    val title = stringResource(app_name)
-    val iconDescription = stringResource(open_menu_content_description)
+  val title = stringResource(app_name)
+  val iconDescription = stringResource(open_menu_content_description)
 
-    TopAppBar(
-        title = { Text(title, Modifier.testTag("top_app_bar_title")) },
-        navigationIcon = { Icon(Icons.Default.Menu, iconDescription, Modifier.clickable { onNavigationClick() }.testTag("top_app_bar_icon")) },
-        modifier = Modifier.testTag("top_app_bar")
-    )
+  TopAppBar(
+    title = { Text(title, Modifier.testTag("top_app_bar_title")) },
+    navigationIcon = {
+      Icon(
+        Icons.Default.Menu,
+        iconDescription,
+        Modifier
+          .clickable { onNavigationClick() }
+          .testTag("top_app_bar_icon")
+      )
+    },
+    modifier = Modifier.testTag("top_app_bar")
+  )
 }

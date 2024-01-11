@@ -49,7 +49,7 @@ android {
     val keyFile = rootProject.file("jopiter-key.jks")
     val propertyFile = rootProject.file("keystore.properties")
 
-    if(!keyFile.exists() || !propertyFile.exists()) {
+    if (!keyFile.exists() || !propertyFile.exists()) {
       logger.warn("Impossible to create signing configs without signing-key.")
       return@signingConfigs
     }
@@ -72,7 +72,7 @@ android {
       dimension = "distribution"
     }
 
-    if(signingConfigs.findByName("production") == null) return@productFlavors
+    if (signingConfigs.findByName("production") == null) return@productFlavors
     create("official") {
       dimension = "distribution"
       signingConfig = signingConfigs.getByName("production")
