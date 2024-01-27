@@ -28,6 +28,7 @@ import io.kotest.extensions.mockserver.MockServerListener
 import io.kotest.inspectors.forAtLeast
 import io.kotest.matchers.result.shouldBeFailure
 import io.kotest.matchers.result.shouldBeSuccess
+import io.kotest.matchers.shouldBe
 import org.mockserver.client.MockServerClient
 import org.mockserver.mock.OpenAPIExpectation.openAPIExpectation
 import org.mockserver.model.Delay.seconds
@@ -81,7 +82,9 @@ class JopiterRestaurantClientTest : FunSpec({
 
     test("Can parse current production response") {
       val client = JopiterRestaurantClient("https://persephone.jopiter.app")
-      client.fetchRestaurants().shouldBeSuccess()
+      client.fetchRestaurants().shouldBeSuccess {
+        it.flatMap { it.restaurants }.associate { it.id to it.name } shouldBe Restaurant.AllRestaurants
+      }
     }
   }
 
