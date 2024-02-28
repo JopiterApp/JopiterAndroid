@@ -94,6 +94,10 @@ android {
 dependencies {
   // Compose
   implementation(libs.bundles.compose)
+  implementation("androidx.compose.material:material:1.6.1")
+  implementation("androidx.compose.ui:ui:1.6.1")
+
+
   debugImplementation(libs.compose.ui.tooling)
   androidTestImplementation(libs.compose.ui.test.junit4)
   androidTestImplementation(libs.compose.ui.test.manifest)
@@ -107,8 +111,8 @@ dependencies {
   // Kotest
   testImplementation(libs.bundles.kotest)
 
-  // Kohttp
-  implementation(libs.bundles.kohttp)
+  // Fuel
+  implementation(libs.bundles.fuel)
 
   // SL4J
   implementation(libs.slf4j.simple)

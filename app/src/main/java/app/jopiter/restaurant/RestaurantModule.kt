@@ -21,6 +21,8 @@ import android.content.Context
 import app.jopiter.Database
 import app.jopiter.restaurant.external.JopiterRestaurantClient
 import app.jopiter.restaurant.repository.PreferredRestaurantRepository
+import app.jopiter.restaurant.repository.RestaurantItemRepository
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 private const val RemoteAddress = "https://persephone.jopiter.app"
@@ -29,5 +31,6 @@ val restaurantModule = module {
 
   single { JopiterRestaurantClient(RemoteAddress) }
   single { PreferredRestaurantRepository(get<Database>().preferredRestaurantQueries) }
+  single { RestaurantItemRepository(get()) }
 
 }

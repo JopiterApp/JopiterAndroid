@@ -18,6 +18,8 @@
 package app.jopiter.restaurant.model
 
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainExactly
 import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -25,25 +27,25 @@ import io.kotest.matchers.shouldBe
 class RestaurantTest : FunSpec({
 
   test("Should map ID to Name correctly") {
-    Restaurant.AllRestaurants shouldContainExactly mapOf(
-      1L to "Piracicaba",
-      2L to "Restaurante área 1",
-      3L to "Restaurante área 2",
-      4L to "Restaurante CRHEA",
-      5L to "Pirassununga",
-      6L to "Central",
-      7L to "PUSP-C",
-      8L to "Física",
-      9L to "Químicas",
-      11L to "Fac. Saúde Pública",
-      12L to "Escola de Enfermagem",
-      13L to "EACH",
-      14L to "Largo São Francisco",
-      17L to "EEL - Área I",
-      19L to "Restaurante Central",
-      20L to "Bauru",
-      23L to "EEL - Área II"
-    )
+    Restaurant.AllRestaurants shouldContainExactly listOf(
+      1 to "Piracicaba",
+      2 to "Restaurante área 1",
+      3 to "Restaurante área 2",
+      4 to "Restaurante CRHEA",
+      5 to "Pirassununga",
+      6 to "Central",
+      7 to "PUSP-C",
+      8 to "Física",
+      9 to "Químicas",
+      11 to "Fac. Saúde Pública",
+      12 to "Escola de Enfermagem",
+      13 to "EACH",
+      14 to "Largo São Francisco",
+      17 to "EEL - Área I",
+      19 to "Restaurante Central",
+      20 to "Bauru",
+      23 to "EEL - Área II"
+    ).map { Restaurant(it.first, it.second) }
   }
 
   test("Should contain 17 mapped restaurants (known amount on 2024-01-10)") {
@@ -52,7 +54,7 @@ class RestaurantTest : FunSpec({
 
   context("Find") {
     test("Finds known restaurants") {
-      Restaurant.find(13) shouldBe Restaurant(13L, "EACH")
+      Restaurant.find(13) shouldBe Restaurant(13, "EACH")
     }
     test("Returns null on unknown restaurants") {
       Restaurant.find(214) shouldBe null

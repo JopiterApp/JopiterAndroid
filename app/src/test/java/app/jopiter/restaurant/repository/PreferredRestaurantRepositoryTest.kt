@@ -37,9 +37,9 @@ class PreferredRestaurantRepositoryTest : FunSpec({
   }
 
   test("Persists value to datastore") {
-    val newRestaurant = Restaurant(18L, "New Restaurant")
+    val newRestaurant = Restaurant(18, "New Restaurant")
     target.setPreferredRestaurant(newRestaurant)
-    database.preferredRestaurantQueries.select().executeAsOne() shouldBe 18L
+    database.preferredRestaurantQueries.select().executeAsOne() shouldBe 18
   }
 
   test("Returns updated value") {

@@ -21,46 +21,28 @@ import app.jopiter.restaurant.model.Campus
 import app.jopiter.restaurant.model.RestaurantMenu
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import io.github.rybalkinsd.kohttp.client.defaultHttpClient
-import io.github.rybalkinsd.kohttp.client.fork
-import io.github.rybalkinsd.kohttp.dsl.httpGet
-import io.github.rybalkinsd.kohttp.ext.url
-import io.github.rybalkinsd.kohttp.jackson.ext.toJson
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import fuel.httpGet
+import fuel.jackson.toJackson
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDate.now
 
-private const val ThreeSecondsInMillis = 3_000L
-
 class JopiterRestaurantClient(
-  private val remoteAddress: String,
-  private val objectMapper: ObjectMapper = ObjectMapper().registerModule(JavaTimeModule())
+  private val apiServer: String,
+  private val objectMapper: ObjectMapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 ) {
 
-  private val httpClient = defaultHttpClient.fork {
-    readTimeout = ThreeSecondsInMillis
-  }
-
   fun fetchRestaurants() = runCatching {
-    httpGet(httpClient) {
-      url(remoteAddress)
-
-      path = "/api/v1/restaurants"
-    }.use { response ->
-      response.toJson().toList().map { objectMapper.convertValue(it, Campus::class.java) }
+    runBlocking {
+     "$apiServer/api/v1/restaurants".httpGet().toJackson<List<Campus>>(objectMapper).get()
     }
   }
 
   fun fetchItems(restaurantId: Int) = runCatching {
-    httpGet(httpClient) {
-      url(remoteAddress)
-
-      path = "/api/v1/restaurants/items"
-
-      param {
-        "restaurantId" to restaurantId
-        "date" to listOf("${now()}")
-      }
-    }.use { response ->
-      response.toJson().toList().map { objectMapper.convertValue(it, RestaurantMenu::class.java) }
+    runBlocking {
+      "$apiServer/api/v1/restaurants/items".httpGet(
+        listOf("restaurantId" to "$restaurantId", "date" to "${now()}")
+      ).toJackson<List<RestaurantMenu>>(objectMapper).get()
     }
   }
 }

@@ -26,9 +26,12 @@ import app.jopiter.restaurant.model.VegetarianItem
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.mockserver.MockServerListener
 import io.kotest.inspectors.forAtLeast
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.result.shouldBeFailure
 import io.kotest.matchers.result.shouldBeSuccess
-import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import org.mockserver.client.MockServerClient
 import org.mockserver.mock.OpenAPIExpectation.openAPIExpectation
 import org.mockserver.model.Delay.seconds
@@ -83,7 +86,7 @@ class JopiterRestaurantClientTest : FunSpec({
     test("Can parse current production response") {
       val client = JopiterRestaurantClient("https://persephone.jopiter.app")
       client.fetchRestaurants().shouldBeSuccess {
-        it.flatMap { it.restaurants }.associate { it.id to it.name } shouldBe Restaurant.AllRestaurants
+        it.flatMap { it.restaurants } shouldContainExactlyInAnyOrder Restaurant.AllRestaurants
       }
     }
   }
@@ -120,9 +123,9 @@ class JopiterRestaurantClientTest : FunSpec({
 
     test("Parses any output from production environment") {
       val client = JopiterRestaurantClient("https://persephone.jopiter.app")
-      (1..30).toList().forAtLeast(10) {
-        client.fetchItems(it).shouldBeSuccess()
-      }
+      (1..30).map {
+        async(Dispatchers.IO) { client.fetchItems(it) }
+      }.awaitAll().forAtLeast(10) { it.shouldBeSuccess() }
     }
   }
 })
