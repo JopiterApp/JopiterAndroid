@@ -22,13 +22,14 @@ import androidx.annotation.StringRes
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import app.jopiter.R
+import app.jopiter.restaurant.RestaurantPage
 
 enum class Page(
   @StringRes private val titleRes: Int,
   val content: @Composable () -> Unit
 ) {
   Home(R.string.home_title, { Text("Home") }),
-  Restaurants(R.string.restaurant_title, { Text("Restaurant") });
+  Restaurants(R.string.restaurant_title, { RestaurantPage() });
 
   fun title(context: Context) = with(context) { getString(titleRes) }
 }
