@@ -4,4 +4,13 @@
     <string name="jopiter_app">Jopiter App</string>
     <string name="home_title">Home</string>
     <string name="restaurant_title">Restaurant</string>
+    <string name="preferred_restaurant">Restaurante Preferido</string>
+    <string name="day_of_week">Dia da Semana</string>
+    <string name="monday">Segunda-feira</string>
+    <string name="tuesday">Terça-feira</string>
+    <string name="wednesday">Quarta-feira</string>
+    <string name="thursday">Quinta-feira</string>
+    <string name="friday">Sexta-feira</string>
+    <string name="saturday">Sábado</string>
+    <string name="sunday">Domingo</string>
 </resources>

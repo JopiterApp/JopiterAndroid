@@ -15,12 +15,12 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun <T> ExposedDropdownMenuBox(
+fun <T> DropdownMenu(
   modifier: Modifier = Modifier,
   value: String,
   label: String,
   options: List<T>,
-  optionToLabel: (T) -> String,
+  optionToLabel: @Composable (T) -> String,
   onOptionSelected: (T) -> Unit
 ) {
   var expanded by remember { mutableStateOf(false) }

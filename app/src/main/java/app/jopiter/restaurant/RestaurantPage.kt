@@ -1,8 +1,8 @@
 package app.jopiter.restaurant
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -10,12 +10,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import app.jopiter.component.ExposedDropdownMenuBox
+import androidx.compose.ui.res.stringResource
+import app.jopiter.R
+import app.jopiter.R.string.preferred_restaurant
+import app.jopiter.component.DropdownMenu
 import app.jopiter.restaurant.model.Restaurant
 import app.jopiter.restaurant.repository.PreferredRestaurantRepository
 import org.koin.compose.koinInject
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RestaurantPage() {
   val preferredRestaurantRepository = koinInject<PreferredRestaurantRepository>()
@@ -27,18 +29,32 @@ fun RestaurantPage() {
 
   Column(Modifier.fillMaxWidth()) {
 
-    ExposedDropdownMenuBox(Modifier.fillMaxWidth(), preferredRestaurant.name,"Preferred Restaurant", Restaurant.AllRestaurants, { it.name }, { setPreferredRestaurant(it) } )
+    DropdownMenu(
+      modifier = Modifier.fillMaxWidth(),
+      value = preferredRestaurant.name,
+      label = stringResource(preferred_restaurant),
+      options = Restaurant.AllRestaurants,
+      optionToLabel = { it.name },
+      onOptionSelected = { setPreferredRestaurant(it) }
+    )
 
-    ExposedDropdownMenuBox(Modifier.fillMaxWidth(), selectedDay.displayName, "Day of Week", DayOfWeek.entries, { it.displayName }, { selectedDay = it })
+    DropdownMenu(
+      modifier = Modifier.fillMaxWidth(),
+      value = stringResource(selectedDay.displayNameRes),
+      label = stringResource(R.string.day_of_week),
+      options = DayOfWeek.entries,
+      optionToLabel = { stringResource(it.displayNameRes) },
+      onOptionSelected = { selectedDay = it }
+    )
   }
 }
 
-enum class DayOfWeek(val displayName: String) {
-  MONDAY("Monday"),
-  TUESDAY("Tuesday"),
-  WEDNESDAY("Wednesday"),
-  THURSDAY("Thursday"),
-  FRIDAY("Friday"),
-  SATURDAY("Saturday"),
-  SUNDAY("Sunday")
+enum class DayOfWeek(@StringRes val displayNameRes: Int) {
+  MONDAY(R.string.monday),
+  TUESDAY(R.string.tuesday),
+  WEDNESDAY(R.string.wednesday),
+  THURSDAY(R.string.thursday),
+  FRIDAY(R.string.friday),
+  SATURDAY(R.string.saturday),
+  SUNDAY(R.string.sunday)
 }
