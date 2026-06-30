@@ -20,20 +20,47 @@ package app.jopiter.subject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.jopiter.subject.model.Subject
+import app.jopiter.subject.repository.PresenceRepository
 import app.jopiter.subject.repository.SubjectRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import java.time.LocalDate
 
-/** Exposes the list of subjects (with their class times) for the Subjects screen. */
+/** A subject plus its attendance status, for display on the Subjects screen. */
+data class SubjectSummary(
+  val subject: Subject,
+  val missed: Int,
+  val remaining: Int,
+  val hasClassToday: Boolean,
+  val presentToday: Boolean
+)
+
+/** Exposes subjects with their missed-class counts and a per-day presence toggle. */
 class SubjectsViewModel(
-  private val repository: SubjectRepository
+  private val subjectRepository: SubjectRepository,
+  private val presenceRepository: PresenceRepository,
+  private val today: () -> LocalDate = LocalDate::now
 ) : ViewModel() {
 
-  val subjects: StateFlow<List<Subject>> =
-    repository.subjects.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MS), emptyList())
+  val summaries: StateFlow<List<SubjectSummary>> =
+    combine(subjectRepository.subjects, presenceRepository.attendanceBySubject) { subjects, attendance ->
+      val day = today()
+      subjects.map { subject -> subject.summarize(attendance[subject.id].orEmpty(), day) }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MS), emptyList())
 
-  fun delete(subject: Subject) = repository.delete(subject.id)
+  fun delete(subject: Subject) = subjectRepository.delete(subject.id)
+
+  fun toggleTodayPresence(subjectId: Long) = presenceRepository.togglePresent(subjectId, today())
+
+  private fun Subject.summarize(attended: Set<LocalDate>, day: LocalDate) = SubjectSummary(
+    subject = this,
+    missed = AbsenceCalculator.missedClasses(this, attended, day),
+    remaining = AbsenceCalculator.remainingMisses(this, attended, day),
+    hasClassToday = classTimes.any { it.dayOfWeek == day.dayOfWeek },
+    presentToday = day in attended
+  )
 
   private companion object {
     const val STOP_TIMEOUT_MS = 5000L

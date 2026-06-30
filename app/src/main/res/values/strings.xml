@@ -37,6 +37,8 @@
     <string name="subject_max_missed_label">Faltas permitidas</string>
     <string name="class_times_label">Horários</string>
     <string name="add_class_time">Adicionar horário</string>
+    <string name="absences_format">Faltas: %1$d/%2$d</string>
+    <string name="present_today">Presente hoje</string>
     <string name="remove">Remover</string>
     <string name="save">Salvar</string>
     <string name="cancel">Cancelar</string>

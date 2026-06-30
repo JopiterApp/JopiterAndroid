@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,6 +33,7 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -46,7 +48,6 @@ import androidx.compose.ui.unit.dp
 import app.jopiter.R
 import app.jopiter.common.TimeFormat
 import app.jopiter.common.displayNameRes
-import app.jopiter.subject.model.Subject
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -55,7 +56,7 @@ fun SubjectsPage(
   onEditSubject: (Long) -> Unit,
   viewModel: SubjectsViewModel = koinViewModel()
 ) {
-  val subjects by viewModel.subjects.collectAsState()
+  val summaries by viewModel.summaries.collectAsState()
 
   Scaffold(
     floatingActionButton = {
@@ -64,7 +65,7 @@ fun SubjectsPage(
       }
     }
   ) { padding ->
-    if (subjects.isEmpty()) {
+    if (summaries.isEmpty()) {
       Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
         Text(stringResource(R.string.no_subjects), Modifier.testTag("no_subjects"))
       }
@@ -74,8 +75,12 @@ fun SubjectsPage(
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
       ) {
-        items(subjects, key = { it.id }) { subject ->
-          SubjectCard(subject) { onEditSubject(subject.id) }
+        items(summaries, key = { it.subject.id }) { summary ->
+          SubjectCard(
+            summary = summary,
+            onClick = { onEditSubject(summary.subject.id) },
+            onTogglePresence = { viewModel.toggleTodayPresence(summary.subject.id) }
+          )
         }
       }
     }
@@ -83,20 +88,20 @@ fun SubjectsPage(
 }
 
 @Composable
-private fun SubjectCard(subject: Subject, onClick: () -> Unit) {
+private fun SubjectCard(summary: SubjectSummary, onClick: () -> Unit, onTogglePresence: () -> Unit) {
   Card(
     Modifier.fillMaxWidth().clickable(onClick = onClick).testTag("subject_card"),
     elevation = 2.dp
   ) {
     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-      Text(subject.name, style = MaterialTheme.typography.h6)
+      Text(summary.subject.name, style = MaterialTheme.typography.h6)
 
-      val subtitle = listOf(subject.code, subject.classroom, subject.lecturer)
+      val subtitle = listOf(summary.subject.code, summary.subject.classroom, summary.subject.lecturer)
         .filter { it.isNotBlank() }
         .joinToString(" · ")
       if (subtitle.isNotBlank()) Text(subtitle, style = MaterialTheme.typography.body2)
 
-      subject.classTimes.forEach { classTime ->
+      summary.subject.classTimes.forEach { classTime ->
         Text(
           stringResource(
             R.string.class_time_summary,
@@ -107,6 +112,31 @@ private fun SubjectCard(subject: Subject, onClick: () -> Unit) {
           style = MaterialTheme.typography.body2
         )
       }
+
+      AbsencesText(summary.missed, summary.subject.maxMissedClasses, summary.remaining)
+      if (summary.hasClassToday) PresenceToggle(summary.presentToday, onTogglePresence)
     }
+  }
+}
+
+@Composable
+private fun AbsencesText(missed: Int, maxMissed: Int, remaining: Int) {
+  Text(
+    stringResource(R.string.absences_format, missed, maxMissed),
+    color = if (remaining <= 0) MaterialTheme.colors.error else MaterialTheme.colors.primary,
+    style = MaterialTheme.typography.subtitle2,
+    modifier = Modifier.testTag("absences")
+  )
+}
+
+@Composable
+private fun PresenceToggle(presentToday: Boolean, onTogglePresence: () -> Unit) {
+  Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
+    Text(stringResource(R.string.present_today), style = MaterialTheme.typography.body2)
+    Switch(
+      checked = presentToday,
+      onCheckedChange = { onTogglePresence() },
+      modifier = Modifier.testTag("presence_toggle")
+    )
   }
 }

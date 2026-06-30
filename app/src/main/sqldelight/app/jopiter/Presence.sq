@@ -1,0 +1,26 @@
+CREATE TABLE Presence(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subjectId INTEGER NOT NULL,
+    date TEXT NOT NULL,
+    FOREIGN KEY(subjectId) REFERENCES Subject(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX presence_subject_date_idx ON Presence(subjectId, date);
+
+selectAll:
+SELECT * FROM Presence;
+
+selectBySubject:
+SELECT * FROM Presence WHERE subjectId = ?;
+
+insert:
+INSERT OR IGNORE INTO Presence(subjectId, date) VALUES (?, ?);
+
+delete:
+DELETE FROM Presence WHERE subjectId = ? AND date = ?;
+
+deleteBySubject:
+DELETE FROM Presence WHERE subjectId = ?;
+
+isPresent:
+SELECT COUNT(*) FROM Presence WHERE subjectId = ? AND date = ?;
