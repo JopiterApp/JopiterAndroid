@@ -15,33 +15,19 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-package app.jopiter
+package app.jopiter.subject
 
-import android.app.Application
-import app.cash.sqldelight.driver.android.AndroidSqliteDriver
-import app.jopiter.restaurant.restaurantModule
-import app.jopiter.subject.subjectModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import app.jopiter.Database
+import app.jopiter.subject.repository.SubjectRepository
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
-class JopiterApplication : Application() {
-
-  override fun onCreate() {
-    super.onCreate()
-    startKoin()
-  }
-
-  private fun startKoin() {
-    startKoin {
-      androidLogger()
-      androidContext(this@JopiterApplication)
-      modules(restaurantModule)
-      modules(subjectModule)
-      modules(module {
-        single { Database(AndroidSqliteDriver(Database.Schema, get(), "Database")) }
-      })
-    }
-  }
+val subjectModule = module {
+  single { SubjectRepository(get<Database>().subjectQueries, get<Database>().classTimeQueries) }
+  viewModel { SubjectsViewModel(get()) }
+  viewModel { parameters -> SubjectEditViewModel(get(), parameters.get()) }
 }
+
+/** Convenience for screens to obtain a [SubjectEditViewModel] bound to a subject id. */
+fun subjectEditParameters(subjectId: Long) = parametersOf(subjectId)

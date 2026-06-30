@@ -1,0 +1,34 @@
+CREATE TABLE Subject(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    code TEXT NOT NULL DEFAULT '',
+    classroom TEXT NOT NULL DEFAULT '',
+    lecturer TEXT NOT NULL DEFAULT '',
+    lecturerEmail TEXT NOT NULL DEFAULT '',
+    maxMissedClasses INTEGER NOT NULL DEFAULT 0,
+    creationDate TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM Subject ORDER BY name;
+
+selectById:
+SELECT * FROM Subject WHERE id = ?;
+
+insert:
+INSERT INTO Subject(name, code, classroom, lecturer, lecturerEmail, maxMissedClasses, creationDate)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+lastInsertedId:
+SELECT last_insert_rowid();
+
+update:
+UPDATE Subject
+SET name = ?, code = ?, classroom = ?, lecturer = ?, lecturerEmail = ?, maxMissedClasses = ?
+WHERE id = ?;
+
+deleteById:
+DELETE FROM Subject WHERE id = ?;
+
+countByNameExcludingId:
+SELECT COUNT(*) FROM Subject WHERE name = ? AND id <> ?;

@@ -15,33 +15,17 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-package app.jopiter
+package app.jopiter.subject
 
-import android.app.Application
-import app.cash.sqldelight.driver.android.AndroidSqliteDriver
-import app.jopiter.restaurant.restaurantModule
-import app.jopiter.subject.subjectModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.dsl.module
+import org.junit.Test
+import org.koin.dsl.koinApplication
 
-class JopiterApplication : Application() {
+class SubjectModuleTest {
 
-  override fun onCreate() {
-    super.onCreate()
-    startKoin()
-  }
-
-  private fun startKoin() {
-    startKoin {
-      androidLogger()
-      androidContext(this@JopiterApplication)
-      modules(restaurantModule)
+  @Test
+  fun checkModule() {
+    koinApplication {
       modules(subjectModule)
-      modules(module {
-        single { Database(AndroidSqliteDriver(Database.Schema, get(), "Database")) }
-      })
     }
   }
 }

@@ -7,6 +7,14 @@ plugins {
   kotlin("kapt")
   id("io.gitlab.arturbosch.detekt") version "1.23.4"
   id("app.cash.sqldelight") version "2.0.1"
+  id("com.diffplug.spotless") version "6.25.0"
+}
+
+spotless {
+  kotlin {
+    target("src/**/*.kt")
+    licenseHeaderFile(rootProject.file("LICENSE_HEADER"))
+  }
 }
 
 android {
@@ -94,6 +102,7 @@ android {
 dependencies {
   // Compose
   implementation(libs.bundles.compose)
+  implementation(libs.compose.ui.tooling.preview)
   implementation("androidx.compose.material:material:1.6.1")
   implementation("androidx.compose.ui:ui:1.6.1")
 
@@ -110,6 +119,7 @@ dependencies {
 
   // Kotest
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotlinx.coroutines.test)
 
   // Fuel
   implementation(libs.bundles.fuel)

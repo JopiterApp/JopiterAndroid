@@ -49,10 +49,10 @@ data class Restaurant(
       23 to "EEL - Área II"
     ).map { Restaurant(it.key, it.value) }
 
-    fun get(id: Int) = find(id)!!
+    fun get(id: Int) = requireNotNull(find(id)) { "Unknown restaurant id: $id" }
     fun find(id: Int) = AllRestaurants.find { it.id == id }
 
     const val DefaultRestaurantId = 6
-    val DefaultRestaurant = find(DefaultRestaurantId)!!
+    val DefaultRestaurant = get(DefaultRestaurantId)
   }
 }

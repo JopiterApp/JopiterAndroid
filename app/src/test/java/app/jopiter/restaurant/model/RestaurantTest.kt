@@ -33,16 +33,16 @@ class RestaurantTest : FunSpec({
       3 to "Restaurante área 2",
       4 to "Restaurante CRHEA",
       5 to "Pirassununga",
-      6 to "Central",
-      7 to "PUSP-C",
-      8 to "Física",
-      9 to "Químicas",
+      6 to "Central - Campus Butantã",
+      7 to "PUSP-C - Campus Butantã",
+      8 to "Física - Campus Butantã",
+      9 to "Químicas - Campus Butantã",
       11 to "Fac. Saúde Pública",
       12 to "Escola de Enfermagem",
       13 to "EACH",
-      14 to "Largo São Francisco",
+      14 to "Fac. Direito",
       17 to "EEL - Área I",
-      19 to "Restaurante Central",
+      19 to "Restaurante Central -Campus RP",
       20 to "Bauru",
       23 to "EEL - Área II"
     ).map { Restaurant(it.first, it.second) }
@@ -66,7 +66,7 @@ class RestaurantTest : FunSpec({
       Restaurant.DefaultRestaurantId shouldBe 6L
     }
     test("Default restaurant name should be Central") {
-      Restaurant.DefaultRestaurant.name shouldBe "Central"
+      Restaurant.DefaultRestaurant.name shouldBe "Central - Campus Butantã"
     }
   }
 })

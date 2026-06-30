@@ -1,0 +1,22 @@
+CREATE TABLE ClassTime(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subjectId INTEGER NOT NULL,
+    dayOfWeek TEXT NOT NULL,
+    startAt TEXT NOT NULL,
+    endAt TEXT NOT NULL,
+    FOREIGN KEY(subjectId) REFERENCES Subject(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE INDEX classtime_subject_idx ON ClassTime(subjectId);
+
+selectAll:
+SELECT * FROM ClassTime ORDER BY dayOfWeek, startAt;
+
+selectBySubject:
+SELECT * FROM ClassTime WHERE subjectId = ? ORDER BY dayOfWeek, startAt;
+
+insert:
+INSERT INTO ClassTime(subjectId, dayOfWeek, startAt, endAt) VALUES (?, ?, ?, ?);
+
+deleteBySubject:
+DELETE FROM ClassTime WHERE subjectId = ?;

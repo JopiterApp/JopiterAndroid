@@ -22,6 +22,6 @@ workflow(
         uses(name = "Set up JDK", action = SetupJavaV4(javaVersion = "17", distribution = SetupJavaV4.Distribution.Adopt))
         uses(action = CheckoutV4())
         uses(action = GradleBuildActionV2(arguments = "detekt"))
-        run(command = "cat app/build/reporots/detekt/detekt.md >> ${expr { GitHubContext.step_summary } }")
+        run(command = "cat app/build/reports/detekt/detekt.md >> ${expr { GitHubContext.step_summary } }")
     }
 }.writeToFile(generateActionBindings = true)

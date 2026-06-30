@@ -26,7 +26,8 @@ class PreferredRestaurantRepository(
   private val preferredRestaurantQueries: PreferredRestaurantQueries
 ) {
 
-  val preferredRestaurant = preferredRestaurantQueries.select().asFlow().map { Restaurant.get(it.executeAsOne().toInt()) }
+  val preferredRestaurant = preferredRestaurantQueries.select().asFlow()
+    .map { Restaurant.get(it.executeAsOne().toInt()) }
 
   fun setPreferredRestaurant(preferredRestaurant: Restaurant) {
     preferredRestaurantQueries.update(preferredRestaurant.id.toLong())

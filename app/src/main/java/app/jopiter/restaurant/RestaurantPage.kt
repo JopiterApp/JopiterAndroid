@@ -1,8 +1,27 @@
+/*
+* Jopiter App
+* Copyright (C) 2026 Leonardo Colman Lopes
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 package app.jopiter.restaurant
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -11,31 +30,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import app.jopiter.R
 import app.jopiter.R.string.preferred_restaurant
 import app.jopiter.component.DropdownMenu
 import app.jopiter.restaurant.model.Restaurant
-import app.jopiter.restaurant.repository.PreferredRestaurantRepository
-import org.koin.compose.koinInject
+import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
 
 @Composable
-fun RestaurantPage() {
-  val preferredRestaurantRepository = koinInject<PreferredRestaurantRepository>()
+fun RestaurantPage(viewModel: RestaurantViewModel = koinViewModel()) {
+  val preferredRestaurant by viewModel.preferredRestaurant.collectAsState()
+  val restaurantMenus by viewModel.menusByDay.collectAsState()
 
-  val preferredRestaurant by preferredRestaurantRepository.preferredRestaurant.collectAsState(Restaurant.get(6))
-  fun setPreferredRestaurant(restaurant: Restaurant) = preferredRestaurantRepository.setPreferredRestaurant(restaurant)
+  var selectedDay by remember { mutableStateOf(DayOfWeek.now()) }
 
-  var selectedDay by remember { mutableStateOf(DayOfWeek.MONDAY) }
-
-  Column(Modifier.fillMaxWidth()) {
-
+  Column(Modifier.fillMaxWidth(), spacedBy(8.dp)) {
     DropdownMenu(
       modifier = Modifier.fillMaxWidth(),
       value = preferredRestaurant.name,
       label = stringResource(preferred_restaurant),
       options = Restaurant.AllRestaurants,
       optionToLabel = { it.name },
-      onOptionSelected = { setPreferredRestaurant(it) }
+      onOptionSelected = { viewModel.setPreferredRestaurant(it) }
     )
 
     DropdownMenu(
@@ -46,15 +63,70 @@ fun RestaurantPage() {
       optionToLabel = { stringResource(it.displayNameRes) },
       onOptionSelected = { selectedDay = it }
     )
+
+    val menusForSelectedDay = restaurantMenus[selectedDay]
+    if(menusForSelectedDay == null) {
+      Text("No restasurants are available for this day.", Modifier.fillMaxWidth())
+    }
+
+    menusForSelectedDay?.forEach { menu ->
+      Text(text = "Periodo: ${menu.period}")
+          Text(
+              text = "Calorias: ${menu.calories}",
+              modifier = Modifier.fillMaxWidth()
+          )
+          Text(
+              text = "Main Item: ${menu.mainItem?.item ?: "N/A"} | Food Group: ${menu.mainItem?.foodGroup} | " +
+                  "Food Group Score: ${menu.mainItem?.foodGroup?.score} | " +
+                  "Preparation: ${menu.mainItem?.preparation} | Score: ${menu.mainItem?.preparation?.score}",
+              modifier = Modifier.fillMaxWidth()
+          )
+
+      Text(
+        text = "Vegetarian Item: ${menu.vegetarianItem?.item ?: "N/A"} | " +
+          "Food Group: ${menu.vegetarianItem?.foodGroup} | " +
+          "Food Group Score: ${menu.vegetarianItem?.foodGroup?.score} | " +
+          "Preparation: ${menu.vegetarianItem?.preparation} | " +
+          "Score: ${menu.vegetarianItem?.preparation?.score}",
+        modifier = Modifier.fillMaxWidth()
+      )
+
+      Text(
+        text = "Dessert Item: ${menu.dessertItem?.item ?: "N/A"} | " +
+          "Food Group: ${menu.dessertItem?.foodGroup} | Food Group Score: ${menu.dessertItem?.foodGroup?.score} | " +
+          "Preparation: ${menu.dessertItem?.preparation} | Score: ${menu.dessertItem?.preparation?.score}",
+        modifier = Modifier.fillMaxWidth()
+      )
+
+      Text(
+        text = "Outros Itens: ${menu.mundaneItems.joinToString(", ")}", modifier = Modifier.fillMaxWidth()
+      )
+    }
+
+
   }
 }
 
 enum class DayOfWeek(@StringRes val displayNameRes: Int) {
-  MONDAY(R.string.monday),
-  TUESDAY(R.string.tuesday),
-  WEDNESDAY(R.string.wednesday),
-  THURSDAY(R.string.thursday),
-  FRIDAY(R.string.friday),
-  SATURDAY(R.string.saturday),
-  SUNDAY(R.string.sunday)
+  Monday(R.string.monday),
+  Tuesday(R.string.tuesday),
+  Wednesday(R.string.wednesday),
+  Thursday(R.string.thursday),
+  Friday(R.string.friday),
+  Saturday(R.string.saturday),
+  Sunday(R.string.sunday);
+
+  companion object {
+    fun now() = LocalDate.now().dayOfWeek.asDayOfWeek()
+  }
+}
+
+fun java.time.DayOfWeek.asDayOfWeek() = when(this) {
+  java.time.DayOfWeek.MONDAY -> DayOfWeek.Monday
+  java.time.DayOfWeek.TUESDAY -> DayOfWeek.Tuesday
+  java.time.DayOfWeek.WEDNESDAY -> DayOfWeek.Wednesday
+  java.time.DayOfWeek.THURSDAY -> DayOfWeek.Thursday
+  java.time.DayOfWeek.FRIDAY -> DayOfWeek.Friday
+  java.time.DayOfWeek.SATURDAY -> DayOfWeek.Saturday
+  java.time.DayOfWeek.SUNDAY -> DayOfWeek.Sunday
 }

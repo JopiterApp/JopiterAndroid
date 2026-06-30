@@ -13,4 +13,28 @@
     <string name="friday">Sexta-feira</string>
     <string name="saturday">Sábado</string>
     <string name="sunday">Domingo</string>
+
+    <!-- Subjects -->
+    <string name="subjects_title">Disciplinas</string>
+    <string name="add_subject">Adicionar disciplina</string>
+    <string name="no_subjects">Nenhuma disciplina cadastrada</string>
+    <string name="edit_subject_title">Disciplina</string>
+    <string name="subject_name_label">Nome</string>
+    <string name="subject_code_label">Código</string>
+    <string name="subject_classroom_label">Sala</string>
+    <string name="subject_lecturer_label">Professor</string>
+    <string name="subject_lecturer_email_label">E-mail do professor</string>
+    <string name="subject_max_missed_label">Faltas permitidas</string>
+    <string name="class_times_label">Horários</string>
+    <string name="add_class_time">Adicionar horário</string>
+    <string name="remove">Remover</string>
+    <string name="save">Salvar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Excluir</string>
+    <string name="error_name_blank">Informe um nome</string>
+    <string name="error_name_duplicate">Já existe uma disciplina com esse nome</string>
+    <string name="error_no_class_time">Adicione ao menos um horário</string>
+    <string name="class_time_start">Início</string>
+    <string name="class_time_end">Fim</string>
+    <string name="class_time_summary">%1$s, %2$s–%3$s</string>
 </resources>

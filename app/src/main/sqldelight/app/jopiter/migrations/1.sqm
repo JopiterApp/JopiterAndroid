@@ -1,0 +1,24 @@
+-- Migrate schema version 1 -> 2: add Subjects and their class times.
+-- Version 1 only contained the PreferredRestaurant table, so existing installs
+-- need these tables created here (fresh installs get them from the .sq files).
+CREATE TABLE Subject(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    code TEXT NOT NULL DEFAULT '',
+    classroom TEXT NOT NULL DEFAULT '',
+    lecturer TEXT NOT NULL DEFAULT '',
+    lecturerEmail TEXT NOT NULL DEFAULT '',
+    maxMissedClasses INTEGER NOT NULL DEFAULT 0,
+    creationDate TEXT NOT NULL
+);
+
+CREATE TABLE ClassTime(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subjectId INTEGER NOT NULL,
+    dayOfWeek TEXT NOT NULL,
+    startAt TEXT NOT NULL,
+    endAt TEXT NOT NULL,
+    FOREIGN KEY(subjectId) REFERENCES Subject(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE INDEX classtime_subject_idx ON ClassTime(subjectId);
