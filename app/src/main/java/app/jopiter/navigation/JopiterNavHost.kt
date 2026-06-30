@@ -26,6 +26,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import app.jopiter.calendar.CalendarPage
 import app.jopiter.restaurant.RestaurantPage
 import app.jopiter.subject.SubjectEditScreen
 import app.jopiter.subject.SubjectsPage
@@ -54,6 +55,8 @@ fun JopiterNavHost(navController: NavHostController, modifier: Modifier = Modifi
         onDone = { navController.popBackStack() }
       )
     }
+
+    composable(Page.Calendar.route) { CalendarPage() }
 
     composable(Page.Restaurants.route) { RestaurantPage() }
   }

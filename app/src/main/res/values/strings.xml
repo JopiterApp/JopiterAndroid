@@ -24,6 +24,25 @@
     <string name="saturday">Sábado</string>
     <string name="sunday">Domingo</string>
 
+    <!-- Calendar / appointments -->
+    <string name="calendar_title">Agenda</string>
+    <string name="appointment_type_exam">Prova</string>
+    <string name="appointment_type_assignment">Trabalho</string>
+    <string name="appointment_type_homework">Tarefa</string>
+    <string name="appointment_type_other">Outro</string>
+    <string name="no_appointments">Nenhum compromisso neste dia</string>
+    <string name="add_appointment">Adicionar compromisso</string>
+    <string name="appointment_name_label">Título</string>
+    <string name="appointment_description_label">Descrição</string>
+    <string name="appointment_type_label">Tipo</string>
+    <string name="appointment_subject_label">Disciplina</string>
+    <string name="appointment_subject_none">Nenhuma</string>
+    <string name="appointment_date_label">Data</string>
+    <string name="appointment_time_label">Hora</string>
+    <string name="previous_month">Mês anterior</string>
+    <string name="next_month">Próximo mês</string>
+    <string name="error_name_required">Informe um título</string>
+
     <!-- Subjects -->
     <string name="subjects_title">Disciplinas</string>
     <string name="add_subject">Adicionar disciplina</string>
