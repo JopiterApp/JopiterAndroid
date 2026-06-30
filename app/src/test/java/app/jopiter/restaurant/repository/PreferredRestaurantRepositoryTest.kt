@@ -46,8 +46,8 @@ class PreferredRestaurantRepositoryTest : FunSpec({
     target.setPreferredRestaurant(Restaurant(12, "Escola de Enfermagem"))
     target shouldHavePreferredRestaurant Restaurant(12, "Escola de Enfermagem")
 
-    target.setPreferredRestaurant(Restaurant(14, "Largo São Francisco"))
-    target shouldHavePreferredRestaurant Restaurant(14, "Largo São Francisco")
+    target.setPreferredRestaurant(Restaurant(14, "Fac. Direito"))
+    target shouldHavePreferredRestaurant Restaurant(14, "Fac. Direito")
   }
 })
 
