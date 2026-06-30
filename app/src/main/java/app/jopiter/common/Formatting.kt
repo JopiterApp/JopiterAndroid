@@ -15,23 +15,24 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-package app.jopiter.navigation
+package app.jopiter.common
 
-import android.content.Context
 import androidx.annotation.StringRes
 import app.jopiter.R
+import java.time.DayOfWeek
+import java.time.format.DateTimeFormatter
 
-/**
- * Top-level destinations shown in the navigation drawer. Each [route] is rendered by [JopiterNavHost];
- * detail screens (e.g. subject editing) are pushed routes that do not appear here.
- */
-enum class Page(
-  @StringRes private val titleRes: Int,
-  val route: String
-) {
-  Home(R.string.home_title, "home"),
-  Subjects(R.string.subjects_title, "subjects"),
-  Restaurants(R.string.restaurant_title, "restaurants");
+/** Shared HH:mm formatter for class/appointment times. */
+val TimeFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-  fun title(context: Context) = with(context) { getString(titleRes) }
-}
+/** Maps a [java.time.DayOfWeek] to its localized (pt-BR) name resource. */
+val DayOfWeek.displayNameRes: Int
+  @StringRes get() = when (this) {
+    DayOfWeek.MONDAY -> R.string.monday
+    DayOfWeek.TUESDAY -> R.string.tuesday
+    DayOfWeek.WEDNESDAY -> R.string.wednesday
+    DayOfWeek.THURSDAY -> R.string.thursday
+    DayOfWeek.FRIDAY -> R.string.friday
+    DayOfWeek.SATURDAY -> R.string.saturday
+    DayOfWeek.SUNDAY -> R.string.sunday
+  }

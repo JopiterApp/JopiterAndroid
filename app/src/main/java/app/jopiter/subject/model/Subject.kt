@@ -15,23 +15,31 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-package app.jopiter.navigation
+package app.jopiter.subject.model
 
-import android.content.Context
-import androidx.annotation.StringRes
-import app.jopiter.R
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalTime
 
 /**
- * Top-level destinations shown in the navigation drawer. Each [route] is rendered by [JopiterNavHost];
- * detail screens (e.g. subject editing) are pushed routes that do not appear here.
+ * A subject the student is enrolled in, with the weekly times its classes happen.
+ * [id] is 0 for a subject that has not been persisted yet.
  */
-enum class Page(
-  @StringRes private val titleRes: Int,
-  val route: String
-) {
-  Home(R.string.home_title, "home"),
-  Subjects(R.string.subjects_title, "subjects"),
-  Restaurants(R.string.restaurant_title, "restaurants");
+data class Subject(
+  val id: Long = 0,
+  val name: String,
+  val code: String = "",
+  val classroom: String = "",
+  val lecturer: String = "",
+  val lecturerEmail: String = "",
+  val maxMissedClasses: Int = 0,
+  val creationDate: LocalDate = LocalDate.now(),
+  val classTimes: List<ClassTime> = emptyList()
+)
 
-  fun title(context: Context) = with(context) { getString(titleRes) }
-}
+/** A weekly recurring class slot for a subject. */
+data class ClassTime(
+  val dayOfWeek: DayOfWeek,
+  val startAt: LocalTime,
+  val endAt: LocalTime
+)
