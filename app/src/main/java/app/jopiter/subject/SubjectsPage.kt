@@ -38,9 +38,13 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -59,11 +63,22 @@ fun SubjectsPage(
   viewModel: SubjectsViewModel = koinViewModel()
 ) {
   val summaries by viewModel.summaries.collectAsState()
+  var showImport by remember { mutableStateOf(false) }
+
+  if (showImport) ImportSubjectsDialog(onDismiss = { showImport = false })
 
   Scaffold(
     floatingActionButton = {
-      FloatingActionButton(onClick = onAddSubject, modifier = Modifier.testTag("add_subject_fab")) {
-        Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_subject))
+      Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        FloatingActionButton(
+          onClick = { showImport = true },
+          modifier = Modifier.testTag("import_fab")
+        ) {
+          Icon(Icons.Default.CloudDownload, contentDescription = stringResource(R.string.import_subjects))
+        }
+        FloatingActionButton(onClick = onAddSubject, modifier = Modifier.testTag("add_subject_fab")) {
+          Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_subject))
+        }
       }
     }
   ) { padding ->

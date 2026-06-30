@@ -73,4 +73,14 @@
     <string name="class_time_start">Início</string>
     <string name="class_time_end">Fim</string>
     <string name="class_time_summary">%1$s, %2$s–%3$s</string>
+
+    <!-- JupiterWeb import -->
+    <string name="import_subjects">Importar do JupiterWeb</string>
+    <string name="import_subjects_title">Importar do JupiterWeb</string>
+    <string name="import_subjects_action">Importar</string>
+    <string name="import_subjects_experimental">Recurso experimental: usamos suas credenciais USP apenas para buscar suas disciplinas no JupiterWeb. Elas são enviadas com segurança ao servidor e nunca são salvas. Pode falhar — o JupiterWeb muda com frequência.</string>
+    <string name="import_subjects_feedback">Enviar feedback no GitHub</string>
+    <string name="import_subjects_usp_number">Número USP</string>
+    <string name="import_subjects_password">Senha USP</string>
+    <string name="import_subjects_error">Não foi possível importar. Verifique suas credenciais e tente novamente.</string>
 </resources>

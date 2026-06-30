@@ -124,6 +124,9 @@ dependencies {
   // Fuel
   implementation(libs.bundles.fuel)
 
+  // OkHttp — used directly for the long-running JupiterWeb timetable import
+  implementation(libs.okhttp)
+
   // SL4J
   implementation(libs.slf4j.simple)
 
