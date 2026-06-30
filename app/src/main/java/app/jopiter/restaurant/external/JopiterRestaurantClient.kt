@@ -25,7 +25,11 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import fuel.httpGet
 import fuel.jackson.toJackson
 import kotlinx.coroutines.runBlocking
-import java.time.LocalDate.now
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters.previousOrSame
+
+private const val DAYS_IN_WEEK = 7
 
 class JopiterRestaurantClient(
   private val apiServer: String,
@@ -40,9 +44,14 @@ class JopiterRestaurantClient(
 
   fun fetchItems(restaurantId: Int) = runCatching {
     runBlocking {
-      "$apiServer/api/v1/restaurants/items".httpGet(
-        listOf("restaurantId" to "$restaurantId", "date" to "${now()}")
-      ).toJackson<List<RestaurantMenu>>(objectMapper).get()
+      val parameters = listOf("restaurantId" to "$restaurantId") + weekDates().map { "date" to it.toString() }
+      "$apiServer/api/v1/restaurants/items".httpGet(parameters).toJackson<List<RestaurantMenu>>(objectMapper).get()
     }
   }
+}
+
+/** The seven days (Monday through Sunday) of the week containing [today]. */
+internal fun weekDates(today: LocalDate = LocalDate.now()): List<LocalDate> {
+  val monday = today.with(previousOrSame(DayOfWeek.MONDAY))
+  return (0 until DAYS_IN_WEEK).map { monday.plusDays(it.toLong()) }
 }

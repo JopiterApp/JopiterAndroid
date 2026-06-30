@@ -26,9 +26,12 @@ import app.jopiter.restaurant.model.VegetarianItem
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.mockserver.MockServerListener
 import io.kotest.inspectors.forAtLeast
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.result.shouldBeFailure
 import io.kotest.matchers.result.shouldBeSuccess
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -39,6 +42,7 @@ import org.mockserver.model.HttpError.error
 import org.mockserver.model.HttpRequest.request
 import org.mockserver.model.HttpResponse.response
 import org.mockserver.verify.VerificationTimes.exactly
+import java.time.LocalDate
 import java.time.LocalDate.now
 
 class JopiterRestaurantClientTest : FunSpec({
@@ -126,6 +130,30 @@ class JopiterRestaurantClientTest : FunSpec({
       (1..30).map {
         async(Dispatchers.IO) { client.fetchItems(it) }
       }.awaitAll().forAtLeast(10) { it.shouldBeSuccess() }
+    }
+
+    test("Fetches the whole current week so other days are available") {
+      val client = JopiterRestaurantClient("https://persephone.jopiter.app")
+      val dates = client.fetchItems(Restaurant.DefaultRestaurantId).getOrThrow().map { it.date }.distinct()
+      dates.size shouldBeGreaterThan 1
+    }
+  }
+
+  context("Week dates") {
+    test("are the seven days of the current week, Monday to Sunday") {
+      weekDates(LocalDate.of(2026, 6, 30)) shouldContainExactly listOf(
+        LocalDate.of(2026, 6, 29),
+        LocalDate.of(2026, 6, 30),
+        LocalDate.of(2026, 7, 1),
+        LocalDate.of(2026, 7, 2),
+        LocalDate.of(2026, 7, 3),
+        LocalDate.of(2026, 7, 4),
+        LocalDate.of(2026, 7, 5)
+      )
+    }
+
+    test("start on Monday even when the reference day is Sunday") {
+      weekDates(LocalDate.of(2026, 7, 5)).first() shouldBe LocalDate.of(2026, 6, 29)
     }
   }
 })
