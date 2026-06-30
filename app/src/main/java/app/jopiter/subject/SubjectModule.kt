@@ -18,6 +18,7 @@
 package app.jopiter.subject
 
 import app.jopiter.Database
+import app.jopiter.subject.repository.NoteRepository
 import app.jopiter.subject.repository.PresenceRepository
 import app.jopiter.subject.repository.SubjectRepository
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -27,8 +28,10 @@ import org.koin.dsl.module
 val subjectModule = module {
   single { SubjectRepository(get<Database>().subjectQueries, get<Database>().classTimeQueries) }
   single { PresenceRepository(get<Database>().presenceQueries) }
+  single { NoteRepository(get<Database>().noteQueries) }
   viewModel { SubjectsViewModel(get(), get()) }
   viewModel { parameters -> SubjectEditViewModel(get(), parameters.get()) }
+  viewModel { parameters -> NotesViewModel(get(), parameters.get()) }
 }
 
 /** Convenience for screens to obtain a [SubjectEditViewModel] bound to a subject id. */

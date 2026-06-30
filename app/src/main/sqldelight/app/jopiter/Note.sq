@@ -1,0 +1,21 @@
+CREATE TABLE Note(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subjectId INTEGER NOT NULL,
+    text TEXT NOT NULL,
+    creationDate TEXT NOT NULL,
+    FOREIGN KEY(subjectId) REFERENCES Subject(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE INDEX note_subject_idx ON Note(subjectId);
+
+selectBySubject:
+SELECT * FROM Note WHERE subjectId = ? ORDER BY creationDate;
+
+insert:
+INSERT INTO Note(subjectId, text, creationDate) VALUES (?, ?, ?);
+
+update:
+UPDATE Note SET text = ? WHERE id = ?;
+
+deleteById:
+DELETE FROM Note WHERE id = ?;

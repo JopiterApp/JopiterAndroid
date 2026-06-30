@@ -1,0 +1,10 @@
+-- Migrate schema version 4 -> 5: add per-subject Notes.
+CREATE TABLE Note(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subjectId INTEGER NOT NULL,
+    text TEXT NOT NULL,
+    creationDate TEXT NOT NULL,
+    FOREIGN KEY(subjectId) REFERENCES Subject(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE INDEX note_subject_idx ON Note(subjectId);

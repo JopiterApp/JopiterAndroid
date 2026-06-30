@@ -29,6 +29,7 @@ import androidx.navigation.navArgument
 import app.jopiter.calendar.CalendarPage
 import app.jopiter.restaurant.RestaurantPage
 import app.jopiter.subject.SubjectEditScreen
+import app.jopiter.subject.SubjectNotesScreen
 import app.jopiter.subject.SubjectsPage
 
 /**
@@ -43,7 +44,8 @@ fun JopiterNavHost(navController: NavHostController, modifier: Modifier = Modifi
     composable(Page.Subjects.route) {
       SubjectsPage(
         onAddSubject = { navController.navigate("subjectEdit/0") },
-        onEditSubject = { id -> navController.navigate("subjectEdit/$id") }
+        onEditSubject = { id -> navController.navigate("subjectEdit/$id") },
+        onOpenNotes = { id -> navController.navigate("subjectNotes/$id") }
       )
     }
     composable(
@@ -54,6 +56,12 @@ fun JopiterNavHost(navController: NavHostController, modifier: Modifier = Modifi
         subjectId = entry.arguments?.getLong("subjectId") ?: 0L,
         onDone = { navController.popBackStack() }
       )
+    }
+    composable(
+      route = "subjectNotes/{subjectId}",
+      arguments = listOf(navArgument("subjectId") { type = NavType.LongType })
+    ) { entry ->
+      SubjectNotesScreen(subjectId = entry.arguments?.getLong("subjectId") ?: 0L)
     }
 
     composable(Page.Calendar.route) { CalendarPage() }
