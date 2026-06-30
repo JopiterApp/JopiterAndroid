@@ -46,6 +46,7 @@ class RestaurantViewModel(
     preferredRestaurantRepository.preferredRestaurant
       .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MS), Restaurant.DefaultRestaurant)
 
+  @Suppress("InjectDispatcher")
   val menusByDay: StateFlow<Map<DayOfWeek, List<RestaurantMenu>>> =
     preferredRestaurantRepository.preferredRestaurant
       .mapLatest { restaurant -> loadMenus(restaurant) }

@@ -41,6 +41,7 @@ class SubjectRepository(
   private val classTimeQueries: ClassTimeQueries
 ) {
 
+  @Suppress("InjectDispatcher")
   val subjects: Flow<List<Subject>> = combine(
     subjectQueries.selectAll().asFlow().mapToList(Dispatchers.IO),
     classTimeQueries.selectAll().asFlow().mapToList(Dispatchers.IO)

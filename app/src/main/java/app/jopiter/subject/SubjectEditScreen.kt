@@ -63,6 +63,9 @@ import org.koin.core.parameter.parametersOf
 import java.time.DayOfWeek
 import java.time.LocalTime
 
+private const val DEFAULT_START_HOUR = 8
+private const val DEFAULT_END_HOUR = 10
+
 @Composable
 fun SubjectEditScreen(
   subjectId: Long,
@@ -73,60 +76,11 @@ fun SubjectEditScreen(
   var showClassTimeDialog by remember { mutableStateOf(false) }
 
   Column(
-    Modifier
-      .fillMaxSize()
-      .verticalScroll(rememberScrollState())
-      .padding(16.dp),
+    Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp)
   ) {
-    OutlinedTextField(
-      value = state.name,
-      onValueChange = viewModel::onNameChange,
-      label = { Text(stringResource(R.string.subject_name_label)) },
-      isError = state.nameError != null,
-      singleLine = true,
-      modifier = Modifier.fillMaxWidth().testTag("subject_name_field")
-    )
-    state.nameError?.let {
-      Text(stringResource(it.messageRes), color = MaterialTheme.colors.error, style = MaterialTheme.typography.caption)
-    }
-
-    OutlinedTextField(state.code, viewModel::onCodeChange, label = { Text(stringResource(R.string.subject_code_label)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
-    OutlinedTextField(state.classroom, viewModel::onClassroomChange, label = { Text(stringResource(R.string.subject_classroom_label)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
-    OutlinedTextField(state.lecturer, viewModel::onLecturerChange, label = { Text(stringResource(R.string.subject_lecturer_label)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
-    OutlinedTextField(state.lecturerEmail, viewModel::onLecturerEmailChange, label = { Text(stringResource(R.string.subject_lecturer_email_label)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
-    OutlinedTextField(
-      value = state.maxMissedClasses,
-      onValueChange = viewModel::onMaxMissedChange,
-      label = { Text(stringResource(R.string.subject_max_missed_label)) },
-      singleLine = true,
-      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-      modifier = Modifier.fillMaxWidth()
-    )
-
-    Text(stringResource(R.string.class_times_label), style = MaterialTheme.typography.subtitle1)
-    state.classTimes.forEachIndexed { index, classTime ->
-      Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
-        Text(
-          stringResource(
-            R.string.class_time_summary,
-            stringResource(classTime.dayOfWeek.displayNameRes),
-            classTime.startAt.format(TimeFormat),
-            classTime.endAt.format(TimeFormat)
-          )
-        )
-        IconButton(onClick = { viewModel.removeClassTime(index) }) {
-          Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.remove))
-        }
-      }
-    }
-    if (state.classTimesError) {
-      Text(stringResource(R.string.error_no_class_time), color = MaterialTheme.colors.error, style = MaterialTheme.typography.caption)
-    }
-    OutlinedButton(onClick = { showClassTimeDialog = true }, modifier = Modifier.testTag("add_class_time_button")) {
-      Text(stringResource(R.string.add_class_time))
-    }
-
+    SubjectFields(state, viewModel)
+    ClassTimesSection(state, viewModel) { showClassTimeDialog = true }
     Button(
       onClick = { if (viewModel.save()) onDone() },
       modifier = Modifier.fillMaxWidth().testTag("save_subject_button")
@@ -147,11 +101,86 @@ fun SubjectEditScreen(
 }
 
 @Composable
+private fun SubjectFields(state: SubjectFormState, viewModel: SubjectEditViewModel) {
+  LabeledField(
+    value = state.name,
+    onValueChange = viewModel::onNameChange,
+    labelRes = R.string.subject_name_label,
+    isError = state.nameError != null,
+    testTag = "subject_name_field"
+  )
+  state.nameError?.let { ErrorText(it.messageRes) }
+
+  LabeledField(state.code, viewModel::onCodeChange, R.string.subject_code_label)
+  LabeledField(state.classroom, viewModel::onClassroomChange, R.string.subject_classroom_label)
+  LabeledField(state.lecturer, viewModel::onLecturerChange, R.string.subject_lecturer_label)
+  LabeledField(state.lecturerEmail, viewModel::onLecturerEmailChange, R.string.subject_lecturer_email_label)
+  LabeledField(
+    value = state.maxMissedClasses,
+    onValueChange = viewModel::onMaxMissedChange,
+    labelRes = R.string.subject_max_missed_label,
+    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+  )
+}
+
+@Composable
+private fun ClassTimesSection(
+  state: SubjectFormState,
+  viewModel: SubjectEditViewModel,
+  onAddClick: () -> Unit
+) {
+  Text(stringResource(R.string.class_times_label), style = MaterialTheme.typography.subtitle1)
+  state.classTimes.forEachIndexed { index, classTime ->
+    Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
+      Text(classTime.summary())
+      IconButton(onClick = { viewModel.removeClassTime(index) }) {
+        Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.remove))
+      }
+    }
+  }
+  if (state.classTimesError) ErrorText(R.string.error_no_class_time)
+  OutlinedButton(onClick = onAddClick, modifier = Modifier.testTag("add_class_time_button")) {
+    Text(stringResource(R.string.add_class_time))
+  }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun LabeledField(
+  value: String,
+  onValueChange: (String) -> Unit,
+  @StringRes labelRes: Int,
+  isError: Boolean = false,
+  keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+  testTag: String? = null
+) {
+  val base = Modifier.fillMaxWidth()
+  OutlinedTextField(
+    value = value,
+    onValueChange = onValueChange,
+    label = { Text(stringResource(labelRes)) },
+    isError = isError,
+    singleLine = true,
+    keyboardOptions = keyboardOptions,
+    modifier = if (testTag != null) base.testTag(testTag) else base
+  )
+}
+
+@Composable
+private fun ErrorText(@StringRes messageRes: Int) {
+  Text(
+    stringResource(messageRes),
+    color = MaterialTheme.colors.error,
+    style = MaterialTheme.typography.caption
+  )
+}
+
+@Composable
 private fun ClassTimeDialog(onDismiss: () -> Unit, onConfirm: (ClassTime) -> Unit) {
   val context = LocalContext.current
   var day by remember { mutableStateOf(DayOfWeek.MONDAY) }
-  var start by remember { mutableStateOf(LocalTime.of(8, 0)) }
-  var end by remember { mutableStateOf(LocalTime.of(10, 0)) }
+  var start by remember { mutableStateOf(LocalTime.of(DEFAULT_START_HOUR, 0)) }
+  var end by remember { mutableStateOf(LocalTime.of(DEFAULT_END_HOUR, 0)) }
 
   AlertDialog(
     onDismissRequest = onDismiss,
@@ -171,7 +200,10 @@ private fun ClassTimeDialog(onDismiss: () -> Unit, onConfirm: (ClassTime) -> Uni
       }
     },
     confirmButton = {
-      TextButton(onClick = { onConfirm(ClassTime(day, start, end)) }, modifier = Modifier.testTag("confirm_class_time")) {
+      TextButton(
+        onClick = { onConfirm(ClassTime(day, start, end)) },
+        modifier = Modifier.testTag("confirm_class_time")
+      ) {
         Text(stringResource(R.string.save))
       }
     },
@@ -187,8 +219,22 @@ private fun TimeRow(@StringRes labelRes: Int, time: LocalTime, onClick: () -> Un
   }
 }
 
+@Composable
+private fun ClassTime.summary(): String = stringResource(
+  R.string.class_time_summary,
+  stringResource(dayOfWeek.displayNameRes),
+  startAt.format(TimeFormat),
+  endAt.format(TimeFormat)
+)
+
 private fun pickTime(context: Context, initial: LocalTime, onPicked: (LocalTime) -> Unit) {
-  TimePickerDialog(context, { _, hour, minute -> onPicked(LocalTime.of(hour, minute)) }, initial.hour, initial.minute, true).show()
+  TimePickerDialog(
+    context,
+    { _, hour, minute -> onPicked(LocalTime.of(hour, minute)) },
+    initial.hour,
+    initial.minute,
+    true
+  ).show()
 }
 
 private val SubjectNameError.messageRes: Int

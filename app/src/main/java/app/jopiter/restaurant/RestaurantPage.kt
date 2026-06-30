@@ -59,17 +59,25 @@ fun RestaurantPage(viewModel: RestaurantViewModel = koinViewModel()) {
               modifier = Modifier.fillMaxWidth()
           )
           Text(
-              text = "Main Item: ${menu.mainItem?.item ?: "N/A"} | Food Group: ${menu.mainItem?.foodGroup} | Food Group Score: ${menu.mainItem?.foodGroup?.score} | Preparation: ${menu.mainItem?.preparation} | Score: ${menu.mainItem?.preparation?.score}",
+              text = "Main Item: ${menu.mainItem?.item ?: "N/A"} | Food Group: ${menu.mainItem?.foodGroup} | " +
+                  "Food Group Score: ${menu.mainItem?.foodGroup?.score} | " +
+                  "Preparation: ${menu.mainItem?.preparation} | Score: ${menu.mainItem?.preparation?.score}",
               modifier = Modifier.fillMaxWidth()
           )
 
       Text(
-        text = "Vegetarian Item: ${menu.vegetarianItem?.item ?: "N/A"} | Food Group: ${menu.vegetarianItem?.foodGroup} | Food Group Score: ${menu.vegetarianItem?.foodGroup?.score} | Preparation: ${menu.vegetarianItem?.preparation} | Score: ${menu.vegetarianItem?.preparation?.score}",
+        text = "Vegetarian Item: ${menu.vegetarianItem?.item ?: "N/A"} | " +
+          "Food Group: ${menu.vegetarianItem?.foodGroup} | " +
+          "Food Group Score: ${menu.vegetarianItem?.foodGroup?.score} | " +
+          "Preparation: ${menu.vegetarianItem?.preparation} | " +
+          "Score: ${menu.vegetarianItem?.preparation?.score}",
         modifier = Modifier.fillMaxWidth()
       )
 
       Text(
-        text = "Dessert Item: ${menu.dessertItem?.item ?: "N/A"} | Food Group: ${menu.dessertItem?.foodGroup} | Food Group Score: ${menu.dessertItem?.foodGroup?.score} | Preparation: ${menu.dessertItem?.preparation} | Score: ${menu.dessertItem?.preparation?.score}",
+        text = "Dessert Item: ${menu.dessertItem?.item ?: "N/A"} | " +
+          "Food Group: ${menu.dessertItem?.foodGroup} | Food Group Score: ${menu.dessertItem?.foodGroup?.score} | " +
+          "Preparation: ${menu.dessertItem?.preparation} | Score: ${menu.dessertItem?.preparation?.score}",
         modifier = Modifier.fillMaxWidth()
       )
 

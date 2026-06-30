@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterialApi::class)
+@Suppress("LongParameterList")
 @Composable
 fun <T> DropdownMenu(
   modifier: Modifier = Modifier,

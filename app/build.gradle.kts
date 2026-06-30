@@ -94,6 +94,7 @@ android {
 dependencies {
   // Compose
   implementation(libs.bundles.compose)
+  implementation(libs.compose.ui.tooling.preview)
   implementation("androidx.compose.material:material:1.6.1")
   implementation("androidx.compose.ui:ui:1.6.1")
 

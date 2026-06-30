@@ -44,7 +44,9 @@ class SubjectsViewModelTest : FunSpec({
     Database.Schema.create(driver)
     val database = Database(driver)
     val repository = SubjectRepository(database.subjectQueries, database.classTimeQueries)
-    repository.save(Subject(name = "Cálculo", classTimes = listOf(ClassTime(MONDAY, LocalTime.of(8, 0), LocalTime.of(10, 0)))))
+    repository.save(
+      Subject(name = "Cálculo", classTimes = listOf(ClassTime(MONDAY, LocalTime.of(8, 0), LocalTime.of(10, 0))))
+    )
 
     val viewModel = SubjectsViewModel(repository)
 
