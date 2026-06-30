@@ -1,0 +1,29 @@
+CREATE TABLE Appointment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subjectId INTEGER,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+    dateTime TEXT NOT NULL,
+    type TEXT NOT NULL,
+    FOREIGN KEY(subjectId) REFERENCES Subject(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE INDEX appointment_subject_idx ON Appointment(subjectId);
+
+selectAll:
+SELECT * FROM Appointment ORDER BY dateTime;
+
+selectBySubject:
+SELECT * FROM Appointment WHERE subjectId = ? ORDER BY dateTime;
+
+insert:
+INSERT INTO Appointment(subjectId, name, description, dateTime, type) VALUES (?, ?, ?, ?, ?);
+
+lastInsertedId:
+SELECT last_insert_rowid();
+
+update:
+UPDATE Appointment SET subjectId = ?, name = ?, description = ?, dateTime = ?, type = ? WHERE id = ?;
+
+deleteById:
+DELETE FROM Appointment WHERE id = ?;

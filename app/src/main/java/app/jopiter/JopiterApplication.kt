@@ -19,6 +19,7 @@ package app.jopiter
 
 import android.app.Application
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
+import app.jopiter.calendar.calendarModule
 import app.jopiter.restaurant.restaurantModule
 import app.jopiter.subject.subjectModule
 import org.koin.android.ext.koin.androidContext
@@ -39,6 +40,7 @@ class JopiterApplication : Application() {
       androidContext(this@JopiterApplication)
       modules(restaurantModule)
       modules(subjectModule)
+      modules(calendarModule)
       modules(module {
         single { Database(AndroidSqliteDriver(Database.Schema, get(), "Database")) }
       })

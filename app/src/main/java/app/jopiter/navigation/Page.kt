@@ -31,6 +31,7 @@ enum class Page(
 ) {
   Home(R.string.home_title, "home"),
   Subjects(R.string.subjects_title, "subjects"),
+  Calendar(R.string.calendar_title, "calendar"),
   Restaurants(R.string.restaurant_title, "restaurants");
 
   fun title(context: Context) = with(context) { getString(titleRes) }
