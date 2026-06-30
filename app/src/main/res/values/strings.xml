@@ -3,9 +3,19 @@
     <string name="open_menu_content_description">open menu</string>
     <string name="jopiter_app">Jopiter App</string>
     <string name="home_title">Home</string>
-    <string name="restaurant_title">Restaurant</string>
+    <string name="restaurant_title">Restaurante</string>
     <string name="preferred_restaurant">Restaurante Preferido</string>
     <string name="day_of_week">Dia da Semana</string>
+
+    <!-- Restaurant menu -->
+    <string name="no_menu_for_day">Nenhum cardápio disponível para este dia.</string>
+    <string name="period_lunch">Almoço</string>
+    <string name="period_dinner">Jantar</string>
+    <string name="calories_format">%1$d kcal</string>
+    <string name="main_item_label">Prato principal</string>
+    <string name="vegetarian_item_label">Opção vegetariana</string>
+    <string name="dessert_item_label">Sobremesa</string>
+    <string name="other_items_label">Acompanhamentos</string>
     <string name="monday">Segunda-feira</string>
     <string name="tuesday">Terça-feira</string>
     <string name="wednesday">Quarta-feira</string>
