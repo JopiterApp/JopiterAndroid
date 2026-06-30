@@ -7,6 +7,7 @@ compose = "1.5.4"
 kotest = "5.8.0"
 kohttp = "0.12.0"
 koin = "3.5.3"
+coroutines = "1.7.3"
 
 
 [libraries]
@@ -32,6 +33,7 @@ slf4j-simple = { module = "org.slf4j:slf4j-simple", version = "1.7.36" }
 jackson-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version = "2.14.2" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
 
 [bundles]

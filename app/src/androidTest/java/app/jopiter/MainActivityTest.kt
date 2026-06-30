@@ -63,6 +63,11 @@ class MainActivityTest {
     composeTestRule.topAppBarTitle().assertTextEquals("Jopiter")
   }
 
+  @Test
+  fun shows_home_as_start_destination() {
+    composeTestRule.onNodeWithTag("home_content").assertIsDisplayed()
+  }
+
   private fun ComposeTestRule.topAppBarTitle() = onNodeWithTag("top_app_bar_title")
 
 

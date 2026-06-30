@@ -19,17 +19,18 @@ package app.jopiter.navigation
 
 import android.content.Context
 import androidx.annotation.StringRes
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import app.jopiter.R
-import app.jopiter.restaurant.RestaurantPage
 
+/**
+ * Top-level destinations shown in the navigation drawer. Each [route] is rendered by [JopiterNavHost];
+ * detail screens (e.g. subject editing) are pushed routes that do not appear here.
+ */
 enum class Page(
   @StringRes private val titleRes: Int,
-  val content: @Composable () -> Unit
+  val route: String
 ) {
-  Home(R.string.home_title, { Text("Home") }),
-  Restaurants(R.string.restaurant_title, { RestaurantPage() });
+  Home(R.string.home_title, "home"),
+  Restaurants(R.string.restaurant_title, "restaurants");
 
   fun title(context: Context) = with(context) { getString(titleRes) }
 }

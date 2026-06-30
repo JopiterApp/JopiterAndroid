@@ -110,6 +110,7 @@ dependencies {
 
   // Kotest
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotlinx.coroutines.test)
 
   // Fuel
   implementation(libs.bundles.fuel)

@@ -37,6 +37,8 @@ data class RestaurantMenu(
 ) {
 
   enum class Period { Lunch, Dinner }
+
+  fun isEmpty() = mainItem == null && vegetarianItem == null && dessertItem == null && mundaneItems.isEmpty()
 }
 
 data class ProteinItem(
