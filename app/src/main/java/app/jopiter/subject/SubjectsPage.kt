@@ -35,6 +35,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
@@ -54,6 +55,7 @@ import org.koin.androidx.compose.koinViewModel
 fun SubjectsPage(
   onAddSubject: () -> Unit,
   onEditSubject: (Long) -> Unit,
+  onOpenNotes: (Long) -> Unit,
   viewModel: SubjectsViewModel = koinViewModel()
 ) {
   val summaries by viewModel.summaries.collectAsState()
@@ -79,7 +81,8 @@ fun SubjectsPage(
           SubjectCard(
             summary = summary,
             onClick = { onEditSubject(summary.subject.id) },
-            onTogglePresence = { viewModel.toggleTodayPresence(summary.subject.id) }
+            onTogglePresence = { viewModel.toggleTodayPresence(summary.subject.id) },
+            onOpenNotes = { onOpenNotes(summary.subject.id) }
           )
         }
       }
@@ -88,7 +91,12 @@ fun SubjectsPage(
 }
 
 @Composable
-private fun SubjectCard(summary: SubjectSummary, onClick: () -> Unit, onTogglePresence: () -> Unit) {
+private fun SubjectCard(
+  summary: SubjectSummary,
+  onClick: () -> Unit,
+  onTogglePresence: () -> Unit,
+  onOpenNotes: () -> Unit
+) {
   Card(
     Modifier.fillMaxWidth().clickable(onClick = onClick).testTag("subject_card"),
     elevation = 2.dp
@@ -115,6 +123,9 @@ private fun SubjectCard(summary: SubjectSummary, onClick: () -> Unit, onTogglePr
 
       AbsencesText(summary.missed, summary.subject.maxMissedClasses, summary.remaining)
       if (summary.hasClassToday) PresenceToggle(summary.presentToday, onTogglePresence)
+      TextButton(onClick = onOpenNotes, modifier = Modifier.testTag("notes_button")) {
+        Text(stringResource(R.string.notes_button))
+      }
     }
   }
 }
