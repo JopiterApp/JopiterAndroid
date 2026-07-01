@@ -17,16 +17,15 @@
 */
 package app.jopiter.navigation
 
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import app.jopiter.calendar.CalendarPage
+import app.jopiter.home.HomePage
 import app.jopiter.restaurant.RestaurantPage
 import app.jopiter.subject.SubjectEditScreen
 import app.jopiter.subject.SubjectNotesScreen
@@ -39,7 +38,7 @@ import app.jopiter.subject.SubjectsPage
 @Composable
 fun JopiterNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
   NavHost(navController, startDestination = Page.Home.route, modifier = modifier) {
-    composable(Page.Home.route) { Text("Home", Modifier.testTag("home_content")) }
+    composable(Page.Home.route) { HomePage() }
 
     composable(Page.Subjects.route) {
       SubjectsPage(
