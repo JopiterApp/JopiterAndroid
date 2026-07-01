@@ -127,6 +127,9 @@ dependencies {
   // OkHttp — used directly for the long-running JupiterWeb timetable import
   implementation(libs.okhttp)
 
+  // WorkManager — schedules presence/appointment reminder notifications
+  implementation(libs.work.runtime)
+
   // SL4J
   implementation(libs.slf4j.simple)
 
