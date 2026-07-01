@@ -83,4 +83,21 @@
     <string name="import_subjects_usp_number">Número USP</string>
     <string name="import_subjects_password">Senha USP</string>
     <string name="import_subjects_error">Não foi possível importar. Verifique suas credenciais e tente novamente.</string>
+
+    <!-- Notifications -->
+    <string name="presence_channel_name">Confirmação de presença</string>
+    <string name="presence_channel_description">Lembretes para confirmar sua presença quando uma aula começa</string>
+    <string name="appointment_channel_name">Compromissos</string>
+    <string name="appointment_channel_description">Lembretes de provas, trabalhos e outros compromissos</string>
+    <string name="presence_notification_title">Confirme sua presença!</string>
+    <string name="presence_notification_text">Toque para confirmar sua presença em %1$s às %2$s.</string>
+    <string name="appointment_notification_title_today">%1$s é hoje!</string>
+    <string name="appointment_notification_title_tomorrow">%1$s é amanhã</string>
+    <string name="appointment_notification_title_days">%1$d dias para %2$s</string>
+    <string name="appointment_notification_text_today">%1$s de %2$s é hoje!</string>
+    <string name="appointment_notification_text_tomorrow">%1$s de %2$s é amanhã!</string>
+    <string name="appointment_notification_text_days">Faltam %1$d dias para %2$s de %3$s.</string>
+    <string name="appointment_notification_text_today_no_subject">%1$s é hoje!</string>
+    <string name="appointment_notification_text_tomorrow_no_subject">%1$s é amanhã!</string>
+    <string name="appointment_notification_text_days_no_subject">Faltam %1$d dias para %2$s.</string>
 </resources>
