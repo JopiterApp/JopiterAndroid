@@ -25,7 +25,7 @@ android {
     applicationId = "app.jopiter"
     targetSdk = 34
     minSdk = 26
-    versionCode = 300
+    versionCode = 3000000
     versionName = "3.0.0"
 
     testApplicationId = "$applicationId.test"
@@ -95,6 +95,7 @@ android {
 
     named("release") {
       isMinifyEnabled = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
 }

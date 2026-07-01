@@ -6,4 +6,11 @@ local.properties
 !*.secret
 jopiter-key.jks
 keystore.properties
+
+# Play Store service account (decrypted by git-secret in CI) and fastlane artifacts
 fastlane/google-play.json
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/vendor/
+.bundle/
+vendor/bundle/

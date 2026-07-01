@@ -1,0 +1,95 @@
+# This file was generated using Kotlin DSL (.github/workflows/release.main.kts).
+# If you want to modify the workflow, please change the Kotlin file and regenerate this YAML file.
+# Generated with https://github.com/typesafegithub/github-workflows-kt
+
+name: 'Release'
+on:
+  push:
+    branches:
+    - 'main'
+jobs:
+  check_yaml_consistency:
+    name: 'Check YAML consistency'
+    runs-on: 'ubuntu-latest'
+    steps:
+    - id: 'step-0'
+      name: 'Check out'
+      uses: 'actions/checkout@v4'
+    - id: 'step-1'
+      name: 'Execute script'
+      run: 'rm ''.github/workflows/release.yaml'' && ''.github/workflows/release.main.kts'''
+    - id: 'step-2'
+      name: 'Consistency check'
+      run: 'git diff --exit-code ''.github/workflows/release.yaml'''
+  release:
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'write'
+    needs:
+    - 'check_yaml_consistency'
+    steps:
+    - id: 'step-0'
+      name: 'Configure Git identity'
+      run: |-
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    - id: 'step-1'
+      name: 'Set up JDK'
+      uses: 'actions/setup-java@v5'
+      with:
+        java-version: '17'
+        distribution: 'adopt'
+    - id: 'step-2'
+      name: 'Set up Gradle'
+      uses: 'gradle/actions/setup-gradle@v4'
+    - id: 'step-3'
+      name: 'Checkout'
+      uses: 'actions/checkout@v4'
+      with:
+        ssh-key: '${{ secrets.RELEASE_KEY }}'
+        fetch-depth: '0'
+    - id: 'step-4'
+      name: 'Reveal secrets'
+      uses: 'entrostat/git-secret-action@v4'
+      with:
+        gpg-private-key: '${{ secrets.GPG_KEY }}'
+    - id: 'step-5'
+      name: 'Determine bump type and changelog'
+      run: |-
+        message=$(git log -1 --pretty=%B)
+        case "$message" in
+          *'#major'*) echo "type=major" >> "$GITHUB_ENV" ;;
+          *'#minor'*) echo "type=minor" >> "$GITHUB_ENV" ;;
+          *)          echo "type=patch" >> "$GITHUB_ENV" ;;
+        esac
+        echo "changelog=$(git log -1 --pretty=%s)" >> "$GITHUB_ENV"
+    - id: 'step-6'
+      name: 'Bump version, tag and push'
+      run: 'kotlin app/bump_version.main.kts "$type" "$changelog"'
+    - id: 'step-7'
+      name: 'Build signed APK for the GitHub release'
+      run: './gradlew assembleOfficialRelease'
+    - id: 'step-8'
+      name: 'Create GitHub release'
+      uses: 'softprops/action-gh-release@v2'
+      with:
+        name: '${{ steps.step-6.outputs.version }}'
+        tag_name: '${{ steps.step-6.outputs.version }}'
+        draft: 'false'
+        files: |-
+          app/build/outputs/apk/official/release/app-official-release.apk
+          app/build/outputs/mapping/officialRelease/mapping.txt
+          app/build/outputs/mapping/officialRelease/configuration.txt
+          app/build/outputs/mapping/officialRelease/seeds.txt
+          app/build/outputs/mapping/officialRelease/usage.txt
+    - id: 'step-9'
+      name: 'Set up Ruby'
+      uses: 'ruby/setup-ruby@v1'
+      with:
+        ruby-version: '3.2.3'
+    - id: 'step-10'
+      name: 'Publish to Play Store'
+      working-directory: 'fastlane'
+      run: |-
+        bundle install --jobs 4 --retry 3
+        bundle exec fastlane playstore
