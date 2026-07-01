@@ -82,7 +82,9 @@ class HomeViewModelTest : FunSpec({
       )
     )
 
-    val state = viewModel.state.first { it.classes.isNotEmpty() }
+    // Wait for both flows to have emitted their real values: the menu flow starts with a seeded
+    // empty list (so classes are not gated behind the network), which arrives before the menus.
+    val state = viewModel.state.first { it.classes.isNotEmpty() && it.menus.isNotEmpty() }
 
     state.classes.single().subject.name shouldBe "Cálculo"
     state.classes.single().classTime.dayOfWeek shouldBe MONDAY
