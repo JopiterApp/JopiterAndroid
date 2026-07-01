@@ -100,4 +100,10 @@
     <string name="appointment_notification_text_today_no_subject">%1$s é hoje!</string>
     <string name="appointment_notification_text_tomorrow_no_subject">%1$s é amanhã!</string>
     <string name="appointment_notification_text_days_no_subject">Faltam %1$d dias para %2$s.</string>
+
+    <!-- Home -->
+    <string name="home_today_classes">Aulas de hoje</string>
+    <string name="home_no_classes">Nenhuma aula hoje</string>
+    <string name="home_menu_title">Cardápio de hoje · %1$s</string>
+    <string name="home_no_menu">Cardápio de hoje indisponível</string>
 </resources>

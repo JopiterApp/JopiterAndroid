@@ -20,6 +20,7 @@ package app.jopiter
 import android.app.Application
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import app.jopiter.calendar.calendarModule
+import app.jopiter.home.homeModule
 import app.jopiter.notification.ReminderCoordinator
 import app.jopiter.notification.ReminderNotifications
 import app.jopiter.notification.notificationModule
@@ -41,6 +42,7 @@ class JopiterApplication : Application() {
       modules(subjectModule)
       modules(calendarModule)
       modules(notificationModule)
+      modules(homeModule)
       modules(module {
         single { Database(AndroidSqliteDriver(Database.Schema, get(), "Database")) }
       })

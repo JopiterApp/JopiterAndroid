@@ -15,14 +15,11 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-package app.jopiter.restaurant.repository
+package app.jopiter.home
 
-import app.jopiter.restaurant.external.JopiterRestaurantClient
-import app.jopiter.restaurant.model.RestaurantMenu
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
-open class RestaurantItemRepository(private val jopiterClient: JopiterRestaurantClient) {
-
-  open fun getRestaurantItems(restaurantId: Int): List<RestaurantMenu> {
-    return jopiterClient.fetchItems(restaurantId).getOrNull().orEmpty()
-  }
+val homeModule = module {
+  viewModel { HomeViewModel(get(), get(), get(), get()) }
 }
