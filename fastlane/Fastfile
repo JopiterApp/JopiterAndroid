@@ -7,12 +7,13 @@ platform :android do
   desc "Publish the official release bundle to the Play Store production track"
   lane :playstore do
     gradle(task: "bundleOfficialRelease")
-    upload_to_play_store(track: "production", timeout: 600)
+    # skip_upload_apk: the workflow also builds an APK (for the GitHub release), so upload only the AAB.
+    upload_to_play_store(track: "production", skip_upload_apk: true, timeout: 600)
   end
 
   desc "Publish the official release bundle to the Play Store internal test track"
   lane :internal_test do
     gradle(task: "bundleOfficialRelease")
-    upload_to_play_store(track: "internal", timeout: 600)
+    upload_to_play_store(track: "internal", skip_upload_apk: true, timeout: 600)
   end
 end
