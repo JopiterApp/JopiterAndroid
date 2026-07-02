@@ -1,0 +1,18 @@
+default_platform(:android)
+
+# Builds and uploads the signed official release bundle to the Play Store. Building the bundle inside
+# the lane (rather than passing an explicit path) lets upload_to_play_store pick it up automatically.
+# Release notes are read from fastlane/metadata/android/<locale>/changelogs/<versionCode>.txt.
+platform :android do
+  desc "Publish the official release bundle to the Play Store production track"
+  lane :playstore do
+    gradle(task: "bundleOfficialRelease")
+    upload_to_play_store(track: "production", timeout: 600)
+  end
+
+  desc "Publish the official release bundle to the Play Store internal test track"
+  lane :internal_test do
+    gradle(task: "bundleOfficialRelease")
+    upload_to_play_store(track: "internal", timeout: 600)
+  end
+end

@@ -1,0 +1,1 @@
+Reescrita moderna do Jopiter: restaurante, disciplinas, presença, agenda, notas, importação do JupiterWeb, notificações e tela inicial.
