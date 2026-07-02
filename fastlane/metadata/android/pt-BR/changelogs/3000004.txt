@@ -1,0 +1,1 @@
+fastlane: upload only the AAB to Play (skip_upload_apk) (#17)
