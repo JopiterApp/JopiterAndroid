@@ -83,6 +83,10 @@ android {
     if (signingConfigs.findByName("production") == null) return@productFlavors
     create("official") {
       dimension = "distribution"
+      // Published to the existing Play Store listing, which was created by the legacy app and keeps
+      // its original (immutable) package name. Only this store build overrides the applicationId; the
+      // code namespace and other variants stay app.jopiter.
+      applicationId = "com.olipsia.jopiter"
       signingConfig = signingConfigs.getByName("production")
     }
   }

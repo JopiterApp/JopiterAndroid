@@ -1,2 +1,2 @@
 json_key_file("fastlane/google-play.json")
-package_name("app.jopiter")
+package_name("com.olipsia.jopiter")
