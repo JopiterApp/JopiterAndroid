@@ -8,3 +8,7 @@ buildscript {
         classpath(libs.kotlin.gradle.plugin)
     }
 }
+
+plugins {
+    alias(libs.plugins.compose.compiler) apply false
+}

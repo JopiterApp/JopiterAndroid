@@ -3,11 +3,10 @@ import java.util.Properties
 
 plugins {
   id("com.android.application")
-  kotlin("android")
-  kotlin("kapt")
   id("io.gitlab.arturbosch.detekt") version "1.23.4"
-  id("app.cash.sqldelight") version "2.0.1"
+  id("app.cash.sqldelight") version "2.3.2"
   id("com.diffplug.spotless") version "6.25.0"
+  alias(libs.plugins.compose.compiler)
 }
 
 spotless {
@@ -19,11 +18,11 @@ spotless {
 
 android {
   namespace = "app.jopiter"
-  compileSdk = 34
+  compileSdk = 36
 
   defaultConfig {
     applicationId = "app.jopiter"
-    targetSdk = 34
+    targetSdk = 36
     minSdk = 26
     versionCode = 3000005
     versionName = "3.0.5"
@@ -40,10 +39,6 @@ android {
 
   buildFeatures {
     compose = true
-  }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.get()
   }
 
   testOptions {

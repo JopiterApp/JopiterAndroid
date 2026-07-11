@@ -2,9 +2,9 @@
 fuel = "3.0.0-alpha1"
 okhttp = "5.0.0-alpha.10"
 work = "2.9.0"
-sqlDelight = "2.0.1"
-android-gradle = "8.0.2"
-kotlin = "1.9.20"
+sqlDelight = "2.3.2"
+android-gradle = "9.2.1"
+kotlin = "2.3.20"
 compose = "1.5.4"
 kotest = "5.8.0"
 kohttp = "0.12.0"
@@ -40,6 +40,9 @@ koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = 
 koin-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
+
+[plugins]
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [bundles]
 compose = ["compose-material", "compose-material-icons", "compose-activity", "compose-navigation"]
