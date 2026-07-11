@@ -1,22 +1,27 @@
 # Publicação (Play Store)
 
-A publicação segue o mesmo modelo do app Petals: **GitHub Actions + git-secret + fastlane**.
+A publicação segue o mesmo modelo do app Petals: **GitHub Actions + git-secret + fastlane**, disparado
+**manualmente** (`workflow_dispatch`) — nenhum push na `main` publica sozinho.
+
+Pra rodar: aba **Actions** → workflow **Release** → **Run workflow**, escolhendo:
+
+- `version_type`: `major`, `minor` ou `patch`.
+- `changelog`: texto do changelog dessa versão.
+
 O workflow [`.github/workflows/release.yaml`](.github/workflows/release.yaml) (gerado a partir de
-`release.main.kts`) roda **automaticamente a cada push na `main`** e:
+`release.main.kts`) então:
 
 1. Revela os segredos cifrados com **git-secret** (keystore + credenciais + service account da Play).
 2. **Sobe a versão** (semver) reescrevendo `versionCode`/`versionName` em `app/build.gradle.kts`,
-   escreve o changelog, faz commit `[skip ci]`, cria a tag e dá push na `main`.
+   escreve o changelog, faz commit, cria a tag e dá push na `main`.
 3. Builda o **APK assinado** (flavor `official`) e cria um **GitHub Release** com o APK + mapping do R8.
 4. Builda o **AAB assinado** e publica na **Play Store, faixa `production`**, via `fastlane`.
 
-> ⚠️ Todo merge na `main` publica em **produção**. Para pausar, desabilite o workflow "Release" em
-> Actions, ou troque a faixa para `internal` na lane do `fastlane/Fastfile`.
+> ⚠️ Cada run publica em **produção**. Pra testar antes, troque a faixa para `internal` na lane do
+> `fastlane/Fastfile` (lane `internal_test` já existe pronta pra isso).
 
 ## Assinatura / versão
 
-- Tipo de bump: **patch** por padrão. Inclua `#minor` ou `#major` na mensagem do commit de merge
-  para subir minor/major.
 - `versionCode = major*1_000_000 + minor*1_000 + patch` (ex.: `3.0.1` → `3000001`).
 
 ## Segredos necessários

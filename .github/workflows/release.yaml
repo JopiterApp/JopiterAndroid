@@ -4,9 +4,20 @@
 
 name: 'Release'
 on:
-  push:
-    branches:
-    - 'main'
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Type of version bump (major, minor, patch)'
+        type: 'choice'
+        required: true
+        options:
+        - 'major'
+        - 'minor'
+        - 'patch'
+      changelog:
+        description: 'Changelog content for this release'
+        type: 'string'
+        required: true
 jobs:
   check_yaml_consistency:
     name: 'Check YAML consistency'
@@ -54,27 +65,17 @@ jobs:
       with:
         gpg-private-key: '${{ secrets.GPG_KEY }}'
     - id: 'step-5'
-      name: 'Determine bump type and changelog'
-      run: |-
-        message=$(git log -1 --pretty=%B)
-        case "$message" in
-          *'#major'*) echo "type=major" >> "$GITHUB_ENV" ;;
-          *'#minor'*) echo "type=minor" >> "$GITHUB_ENV" ;;
-          *)          echo "type=patch" >> "$GITHUB_ENV" ;;
-        esac
-        echo "changelog=$(git log -1 --pretty=%s)" >> "$GITHUB_ENV"
-    - id: 'step-6'
       name: 'Bump version, tag and push'
-      run: 'kotlin app/bump_version.main.kts "$type" "$changelog"'
-    - id: 'step-7'
+      run: 'kotlin app/bump_version.main.kts "${{ github.event.inputs.version_type }}" "${{ github.event.inputs.changelog }}"'
+    - id: 'step-6'
       name: 'Build signed APK for the GitHub release'
       run: './gradlew assembleOfficialRelease'
-    - id: 'step-8'
+    - id: 'step-7'
       name: 'Create GitHub release'
       uses: 'softprops/action-gh-release@v2'
       with:
-        name: '${{ steps.step-6.outputs.version }}'
-        tag_name: '${{ steps.step-6.outputs.version }}'
+        name: '${{ steps.step-5.outputs.version }}'
+        tag_name: '${{ steps.step-5.outputs.version }}'
         draft: 'false'
         files: |-
           app/build/outputs/apk/official/release/app-official-release.apk
@@ -82,12 +83,12 @@ jobs:
           app/build/outputs/mapping/officialRelease/configuration.txt
           app/build/outputs/mapping/officialRelease/seeds.txt
           app/build/outputs/mapping/officialRelease/usage.txt
-    - id: 'step-9'
+    - id: 'step-8'
       name: 'Set up Ruby'
       uses: 'ruby/setup-ruby@v1'
       with:
         ruby-version: '3.2.3'
-    - id: 'step-10'
+    - id: 'step-9'
       name: 'Publish to Play Store'
       working-directory: 'fastlane'
       run: |-

@@ -4,7 +4,8 @@ import java.io.File
 
 // Bumps the app version in app/build.gradle.kts, writes the release changelog, commits, tags and
 // pushes. Usage: app/bump_version.main.kts <major|minor|patch> "<changelog>"
-// The commit carries [skip ci] so pushing it does not re-trigger the release workflow.
+// The commit carries [skip ci] so pushing it does not trigger the push-based CI workflows
+// (unit tests, detekt, license header, UI tests). Release itself is workflow_dispatch-only.
 
 val buildGradleFile = File("app/build.gradle.kts")
 val changelogsDir = File("fastlane/metadata/android/pt-BR/changelogs")

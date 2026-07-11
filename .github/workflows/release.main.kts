@@ -20,7 +20,8 @@ import io.github.typesafegithub.workflows.actions.softprops.ActionGhRelease
 import io.github.typesafegithub.workflows.domain.Mode
 import io.github.typesafegithub.workflows.domain.Permission
 import io.github.typesafegithub.workflows.domain.RunnerType.UbuntuLatest
-import io.github.typesafegithub.workflows.domain.triggers.Push
+import io.github.typesafegithub.workflows.domain.triggers.WorkflowDispatch
+import io.github.typesafegithub.workflows.domain.triggers.WorkflowDispatch.Input
 import io.github.typesafegithub.workflows.dsl.expressions.Contexts
 import io.github.typesafegithub.workflows.dsl.expressions.expr
 import io.github.typesafegithub.workflows.dsl.workflow
@@ -34,7 +35,23 @@ val RELEASE_KEY by Contexts.secrets
 
 workflow(
   name = "Release",
-  on = listOf(Push(branches = listOf("main"))),
+  on = listOf(
+    WorkflowDispatch(
+      inputs = mapOf(
+        "version_type" to Input(
+          description = "Type of version bump (major, minor, patch)",
+          required = true,
+          type = WorkflowDispatch.Input.Type.Choice,
+          options = listOf("major", "minor", "patch"),
+        ),
+        "changelog" to Input(
+          description = "Changelog content for this release",
+          required = true,
+          type = WorkflowDispatch.Input.Type.String,
+        ),
+      ),
+    ),
+  ),
   sourceFile = __FILE__,
 ) {
   job(
@@ -60,22 +77,12 @@ workflow(
 
     uses(name = "Reveal secrets", action = GitSecretAction(gpgPrivateKey = expr { GPG_KEY }))
 
-    run(
-      name = "Determine bump type and changelog",
-      command = """
-        message=${'$'}(git log -1 --pretty=%B)
-        case "${'$'}message" in
-          *'#major'*) echo "type=major" >> "${'$'}GITHUB_ENV" ;;
-          *'#minor'*) echo "type=minor" >> "${'$'}GITHUB_ENV" ;;
-          *)          echo "type=patch" >> "${'$'}GITHUB_ENV" ;;
-        esac
-        echo "changelog=${'$'}(git log -1 --pretty=%s)" >> "${'$'}GITHUB_ENV"
-      """.trimIndent(),
-    )
+    val versionType = expr { github["event.inputs.version_type"]!! }
+    val changelog = expr { github["event.inputs.changelog"]!! }
 
     val bump = run(
       name = "Bump version, tag and push",
-      command = "kotlin app/bump_version.main.kts \"${'$'}type\" \"${'$'}changelog\"",
+      command = "kotlin app/bump_version.main.kts \"$versionType\" \"$changelog\"",
     )
 
     run(
