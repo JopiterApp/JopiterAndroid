@@ -25,8 +25,8 @@ android {
     applicationId = "app.jopiter"
     targetSdk = 34
     minSdk = 26
-    versionCode = 3000004
-    versionName = "3.0.4"
+    versionCode = 3000005
+    versionName = "3.0.5"
 
     testApplicationId = "$applicationId.test"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
