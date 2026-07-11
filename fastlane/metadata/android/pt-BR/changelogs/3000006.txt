@@ -1,0 +1,1 @@
+Atualização de bibliotecas (AGP 9.2.1, Kotlin 2.3.20, compileSdk/targetSdk 36, SQLDelight 2.3.2).
