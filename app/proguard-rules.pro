@@ -31,3 +31,11 @@
 
 # SLF4J (used by Fuel/MockServer transitive deps) — optional at runtime.
 -dontwarn org.slf4j.**
+
+# Room, pulled in transitively by WorkManager. room-runtime 2.5.0 ships
+# "-keep class * extends androidx.room.RoomDatabase" with no member specification. Under R8 full
+# mode (the default since AGP 8) a member-less -keep does NOT implicitly retain the default
+# constructor, so the generated WorkDatabase_Impl survives with no <init>() and Room's reflective
+# instantiation blows up while androidx.startup initializes WorkManager, crashing the app on launch.
+-keep class * extends androidx.room.RoomDatabase { <init>(); }
+-keep class * extends androidx.room.RoomDatabase$Callback { <init>(); }
