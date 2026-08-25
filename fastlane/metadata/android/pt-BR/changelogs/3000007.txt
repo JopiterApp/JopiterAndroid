@@ -1,0 +1,1 @@
+Corrige o travamento que impedia o app de abrir.
